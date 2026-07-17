@@ -801,3 +801,157 @@ border-radius:8px;
 .new-style{
 
 }
+
+.copyright{
+    text-align:center;
+    color:#bbb;
+    line-height:1.8;
+    margin:0;
+}
+
+/* ==================================================
+   MOBILE RESPONSIVE DESIGN
+   ================================================== */
+
+@media screen and (max-width:768px){
+
+/* Header */
+
+header{
+    padding:25px 15px;
+}
+
+header img{
+    width:100px;
+}
+
+header h1{
+    font-size:32px;
+}
+
+header h2{
+    font-size:22px;
+}
+
+header p{
+    font-size:16px;
+    line-height:1.7;
+}
+
+/* Navigation */
+
+nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    padding:15px;
+}
+
+nav a{
+    margin:5px;
+    font-size:15px;
+}
+
+/* Hero */
+
+.hero{
+    padding:60px 20px;
+}
+
+.hero h1{
+    font-size:34px;
+}
+
+.hero h2{
+    font-size:22px;
+}
+
+.hero p{
+    font-size:17px;
+}
+
+/* Sections */
+
+.section{
+    margin:50px auto;
+}
+
+.section h2{
+    font-size:28px;
+}
+
+.section p{
+    font-size:17px;
+}
+
+/* Statistics */
+
+.stats{
+    grid-template-columns:1fr;
+}
+
+/* Cards */
+
+.book-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.feature-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.book-card{
+
+    margin:auto;
+
+}
+
+.feature-card{
+
+    min-height:auto;
+
+}
+
+/* Search */
+
+#searchBox,
+#globalSearch{
+
+    font-size:16px;
+
+}
+
+/* Breadcrumb */
+
+.breadcrumb{
+
+    font-size:14px;
+
+    padding:12px 20px;
+
+}
+
+/* Footer */
+
+.footer-container{
+
+    grid-template-columns:1fr;
+
+    text-align:center;
+
+}
+
+.footer-column{
+
+    margin-bottom:20px;
+
+}
+
+}
+
+}
