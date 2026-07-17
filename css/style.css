@@ -162,6 +162,10 @@ nav a.active{
     display:block;
 }
 
+.book-image.top{
+    object-position:top;
+}
+
 #searchBox{
     width:100%;
     padding:15px;
