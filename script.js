@@ -29,3 +29,28 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 });
+
+// Auto-count entries from other pages (only runs on index.html)
+  const countTargets = [
+    { file: 'fathers.html', elementId: 'count-fathers' },
+    { file: 'councils.html', elementId: 'count-councils' },
+    { file: 'saints.html', elementId: 'count-saints' },
+    { file: 'books.html', elementId: 'count-books' }
+  ];
+
+  countTargets.forEach(function (target) {
+    const el = document.getElementById(target.elementId);
+    if (!el) return; // not on this page, skip
+
+    fetch(target.file)
+      .then(function (response) { return response.text(); })
+      .then(function (html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const count = doc.querySelectorAll('.book-card, .card').length;
+        el.textContent = count;
+      })
+      .catch(function () {
+        // if fetch fails (e.g. running locally without a server), leave the number as-is
+      });
+  });
