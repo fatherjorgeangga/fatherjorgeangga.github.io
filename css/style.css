@@ -129,19 +129,25 @@ align-items:stretch;
 
 background:white;
 
-border-radius:12px;
+border-radius:15px;
 
-box-shadow:0 4px 10px rgba(0,0,0,.1);
+box-shadow:0 6px 18px rgba(0,0,0,.12);
 
 overflow:hidden;
 
 transition:.3s;
 
+display:flex;
+
+flex-direction:column;
+
+height:100%;
+
 }
 
 .book-card:hover{
 
-transform:translateY(-6px);
+transform:translateY(-8px);
 
 }
 
