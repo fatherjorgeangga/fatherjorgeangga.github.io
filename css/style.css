@@ -849,8 +849,12 @@ nav{
 }
 
 nav a{
+    flex:1 1 45%;
+    text-align:center;
     margin:5px;
+    padding:10px;
     font-size:15px;
+    box-sizing:border-box;
 }
 
 /* Hero */
