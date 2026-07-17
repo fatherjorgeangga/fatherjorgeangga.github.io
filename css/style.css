@@ -665,3 +665,74 @@ nav a{
 nav a:hover{
     color:#d4af37;
 }
+
+/* Featured Book */
+
+.featured-book{
+
+display:grid;
+
+grid-template-columns:320px 1fr;
+
+gap:40px;
+
+background:white;
+
+padding:40px;
+
+border-radius:18px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+margin:50px 0;
+
+align-items:center;
+
+}
+
+.featured-image img{
+
+width:100%;
+
+border-radius:12px;
+
+display:block;
+
+}
+
+.featured-info h2{
+
+margin-top:0;
+
+color:#7b5a2c;
+
+}
+
+.featured-info h3{
+
+font-size:34px;
+
+margin:10px 0;
+
+color:#4b2e12;
+
+}
+
+.featured-info p{
+
+line-height:1.9;
+
+font-size:18px;
+
+}
+
+@media(max-width:900px){
+
+.featured-book{
+
+grid-template-columns:1fr;
+
+text-align:center;
+
+}
+
