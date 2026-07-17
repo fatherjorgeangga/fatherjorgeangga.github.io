@@ -647,3 +647,21 @@ color:#d4af37;
 
 }
 
+nav{
+    background:#222;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:18px;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#d4af37;
+}
