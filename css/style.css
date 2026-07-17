@@ -503,28 +503,11 @@ gap:35px;
 
 margin-top:40px;
 
-}
-
 .feature-card{
-
-background:white;
-
-padding:35px;
-
-border-radius:16px;
-
-box-shadow:0 8px 20px rgba(0,0,0,.10);
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:space-between;
-
-transition:.3s;
-
-min-height:320px;
-
+    background:white;
+    display:flex;
+    flex-direction:column;
+    padding:35px;
 }
 
 .feature-card:hover{
@@ -634,13 +617,9 @@ background:#6a4320;
 
 .feature-card{
     background:white;
-    border-radius:16px;
-    padding:35px;
-    box-shadow:0 8px 20px rgba(0,0,0,.10);
     display:flex;
     flex-direction:column;
-    text-align:left;
-    transition:.3s;
+    padding:35px;
 }
 
 .feature-card:hover{
