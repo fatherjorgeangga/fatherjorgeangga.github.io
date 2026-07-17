@@ -959,3 +959,35 @@ nav a{
 }
 
 }
+
+.copyright{
+    text-align:center;
+    color:#bbb;
+    line-height:1.8;
+    margin:0;
+}
+
+/* Desktop */
+
+.menu-toggle{
+    display:none;
+}
+
+/* Mobile */
+
+@media screen and (max-width:768px){
+
+.menu-toggle{
+    display:block;
+}
+
+.nav-links{
+    display:none;
+    flex-direction:column;
+}
+
+.nav-links.show{
+    display:flex;
+}
+
+}
