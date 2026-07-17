@@ -773,12 +773,6 @@ border-radius:8px;
 
 }
 
-/* ==================================================
-   MOBILE RESPONSIVE DESIGN
-   ================================================== */
-
-@media screen and (max-width:768px){
-
 /* Header */
 
 header{
@@ -800,6 +794,15 @@ header h2{
 header p{
     font-size:16px;
     line-height:1.7;
+}
+...
+.copyright{
+    text-align:center;
+    color:#bbb;
+    line-height:1.8;
+    margin:0;
+}
+
 }
 
 /* Navigation */
