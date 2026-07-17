@@ -1,0 +1,95 @@
+/* ===============================
+   ADMIN LOGIN PAGE
+=============================== */
+
+.login-box{
+    max-width:420px;
+    margin:40px auto;
+    background:white;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    text-align:center;
+}
+
+.login-box h2{
+    color:#4b2e12;
+    margin-top:0;
+    margin-bottom:10px;
+}
+
+.login-box .subtitle{
+    font-size:16px;
+    margin-bottom:30px;
+}
+
+.login-box form{
+    text-align:left;
+}
+
+.login-box label{
+    display:block;
+    font-weight:bold;
+    color:#4b2e12;
+    margin-bottom:6px;
+    margin-top:18px;
+}
+
+.login-box input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+.login-box input:focus{
+    outline:none;
+    border-color:#4b2e12;
+}
+
+.error-message{
+    color:#b00020;
+    font-size:14px;
+    margin-top:12px;
+    min-height:18px;
+}
+
+.login-button{
+    width:100%;
+    margin-top:25px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.logged-in-box p{
+    font-size:17px;
+    margin-bottom:20px;
+}
+
+.logged-in-box .button{
+    display:block;
+    width:100%;
+    margin-bottom:12px;
+    box-sizing:border-box;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.logout-button{
+    background:#b00020;
+}
+
+.logout-button:hover{
+    background:#8a0018;
+}
+
+@media screen and (max-width:768px){
+    .login-box{
+        margin:20px auto;
+        padding:25px;
+    }
+}
