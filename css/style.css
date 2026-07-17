@@ -260,3 +260,63 @@ line-height:1.8;
 text-align:justify;
 
 }
+
+.stats{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+gap:25px;
+
+margin:60px 0;
+
+}
+
+.stat-card{
+
+background:white;
+
+padding:30px;
+
+text-align:center;
+
+border-radius:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+transition:.3s;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.stat-card h2{
+
+font-size:42px;
+
+margin-bottom:10px;
+
+}
+
+.stat-card h3{
+
+font-size:42px;
+
+color:#7b5a2c;
+
+margin:0;
+
+}
+
+.stat-card p{
+
+font-size:18px;
+
+margin-top:10px;
+
+}
