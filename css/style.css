@@ -71,18 +71,6 @@ margin-bottom:20px;
 
 }
 
-.hero p{
-
-font-size:20px;
-
-max-width:700px;
-
-margin:auto;
-
-line-height:1.8;
-
-}
-
 .button{
 
 display:inline-block;
@@ -505,15 +493,27 @@ gap:35px;
 
 margin-top:40px;
 
+}
+
 .feature-card{
 
 background:white;
+
+border-radius:16px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.10);
+
+padding:35px;
 
 display:flex;
 
 flex-direction:column;
 
-padding:35px;
+justify-content:space-between;
+
+transition:.3s;
+
+min-height:320px;
 
 }
 
@@ -551,7 +551,11 @@ margin-bottom:30px;
 
 display:inline-block;
 
-padding:14px 26px;
+margin-top:auto;
+
+align-self:flex-start;
+
+padding:14px 28px;
 
 background:#4b2e12;
 
@@ -562,8 +566,6 @@ text-decoration:none;
 border-radius:8px;
 
 font-weight:bold;
-
-text-align:center;
 
 }
 
