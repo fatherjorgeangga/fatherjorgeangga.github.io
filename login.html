@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login | Saint Michael Archives</title>
+
+<link rel="icon" href="logo2.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<a href="index.html">
+
+<img src="images/newlogo.png"
+width="140"
+alt="Saint Michael Archives Logo">
+
+</a>
+
+<h1>Office Of Exorcism</h1>
+  
+<h2>St. Michael the Archangel Parish</h2>
+<p>
+
+Quis ut Deus?
+
+<br><br>
+
+Traditional Roman Catholic
+
+<br>
+  
+Spiritual & Healing Ministry
+
+<br><br>
+
+Preserving Sacred Scripture,
+Sacred Tradition,
+Catholic Books,
+and Historical Church Documents.
+
+</p>
+
+</header>
+
+<nav>
+
+<button class="menu-toggle">
+
+☰ Menu
+
+</button>
+
+<div class="nav-links">
+
+<a href="index.html">🏠 Home</a>
+
+<a href="books.html">📚 Books</a>
+
+<a href="search.html">🔎 Search</a>
+
+<a href="saints.html">⛪ Saints</a>
+
+<a href="fathers.html">👨‍🏫 Church Fathers</a>
+
+<a href="councils.html">📜 Councils</a>
+
+<a href="about.html">ℹ About</a>
+
+</div>
+
+</nav>
+
+<div class="breadcrumb">
+
+<a href="index.html">🏠 Home</a>
+
+<span>&gt;</span>
+
+🔐 Admin Login
+
+</div>
+
+<div class="container">
+
+<div class="login-box">
+
+<h2>🔐 Administrator Login</h2>
+
+<p class="subtitle">
+
+For parish staff and clergy managing this archive.
+
+</p>
+
+<!-- LOGIN FORM (shown when logged out) -->
+
+<form id="loginForm">
+
+<label for="email">Email</label>
+
+<input type="email" id="email" placeholder="you@parish.org" required>
+
+<label for="password">Password</label>
+
+<input type="password" id="password" placeholder="••••••••" required>
+
+<div id="errorMessage" class="error-message"></div>
+
+<button type="submit" class="button login-button">Log In</button>
+
+</form>
+
+<!-- LOGGED-IN STATE (shown when logged in) -->
+
+<div id="loggedInBox" class="logged-in-box" style="display:none;">
+
+<p>Signed in as <strong id="userEmail"></strong></p>
+
+<a href="admin.html" class="button">Go to Admin Panel</a>
+
+<button id="logoutButton" class="button logout-button">Log Out</button>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<div class="footer-container">
+
+<div class="footer-column">
+
+<h3>🏛 Saint Michael Archives</h3>
+
+<p>
+
+Preserving Sacred Scripture,
+Sacred Tradition,
+Catholic Books,
+Church Fathers,
+Saints,
+and Church Documents.
+
+</p>
+
+</div>
+
+<div class="footer-column">
+
+<h3>📚 Quick Links</h3>
+
+<a href="index.html">Home</a><br>
+
+<a href="books.html">Books</a><br>
+
+<a href="saints.html">Saints</a><br>
+
+<a href="fathers.html">Church Fathers</a><br>
+
+<a href="councils.html">Councils</a><br>
+
+<a href="about.html">About</a>
+
+</div>
+
+<div class="footer-column">
+
+<h3>✝ Motto</h3>
+
+<p>
+
+<b>Quis ut Deus?</b>
+
+<br><br>
+
+"Who is like unto God?"
+
+</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+
+© 2026 Saint Michael Archives
+
+<br>
+
+Designed and maintained by
+Saint Michael the Archangel Parish
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<!--
+  FIREBASE STEP (not active yet):
+  Once the Firebase project is created, we will add:
+  1. Firebase SDK script tags here
+  2. A firebase-config.js file with your project keys
+  3. A login.js file that:
+     - listens for #loginForm submit
+     - calls Firebase signInWithEmailAndPassword()
+     - on success, hides #loginForm and shows #loggedInBox
+     - on failure, shows the error in #errorMessage
+     - listens for #logoutButton click and calls Firebase signOut()
+-->
+
+</body>
+
+</html>
