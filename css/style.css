@@ -944,11 +944,14 @@ nav a{
 
     .menu-toggle{
         display:block;
+        width:100%;
+        text-align:left;
         background:none;
         border:none;
         color:white;
-        font-size:22px;
+        font-size:20px;
         font-weight:bold;
+        padding:10px 0;
         cursor:pointer;
     }
 
