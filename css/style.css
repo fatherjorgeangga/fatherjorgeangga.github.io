@@ -736,3 +736,42 @@ text-align:center;
 
 }
 
+/* ===============================
+   BREADCRUMB
+=============================== */
+
+.breadcrumb{
+
+width:90%;
+
+max-width:1200px;
+
+margin:25px auto 0;
+
+font-size:15px;
+
+color:#666;
+
+}
+
+.breadcrumb a{
+
+color:#4b2e12;
+
+text-decoration:none;
+
+font-weight:bold;
+
+}
+
+.breadcrumb a:hover{
+
+text-decoration:underline;
+
+}
+
+.breadcrumb span{
+
+color:#888;
+
+}
