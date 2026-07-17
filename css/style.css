@@ -911,4 +911,63 @@ nav a{
 
 }
 
+/* ===========================
+   DESKTOP (Default)
+=========================== */
+
+/* Hide hamburger button on desktop */
+.menu-toggle {
+    display: none;
+}
+
+/* Show navigation normally */
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 768px) {
+
+    /* Show hamburger */
+    .menu-toggle {
+        display: block;
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+        background: none;
+        border: none;
+        z-index: 1001;
+    }
+
+    /* Hide menu by default */
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: #111;
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 0;
+        gap: 18px;
+        z-index: 1000;
+    }
+
+    /* Show menu when active */
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 10px;
+    }
+}
+
 
