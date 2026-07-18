@@ -128,12 +128,13 @@ nav a.active{
 }
 
 .book-cover{
-    height:220px;
+    aspect-ratio:4 / 5;
     background:#ddd;
     display:flex;
     justify-content:center;
     align-items:center;
     font-size:70px;
+    overflow:hidden;
 }
 
 .book-content{
@@ -157,7 +158,7 @@ nav a.active{
 
 .book-image{
     width:100%;
-    height:220px;
+    aspect-ratio:4 / 5;
     object-fit:cover;
     display:block;
 }
@@ -774,6 +775,7 @@ footer hr{
 
     .book-card{
         margin:auto;
+        max-width:400px;
     }
 
     .feature-card{
