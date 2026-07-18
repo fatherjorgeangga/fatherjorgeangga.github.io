@@ -666,6 +666,18 @@ footer hr{
 
 @media screen and (max-width:768px){
 
+    /* Construction banner: on mobile, take it out of "floating fixed"
+       mode so it can no longer sit on top of the nav and swallow taps
+       meant for the hamburger button underneath it. */
+    .construction-banner{
+        position:static;
+        width:auto;
+        max-width:340px;
+        margin:14px auto 0;
+        top:auto;
+        right:auto;
+    }
+
     /* Header */
     header{
         padding:25px 15px;
