@@ -74,6 +74,60 @@ if (logoutButton) {
 }
 
 // ===========================================
+// TAB SWITCHING
+// ===========================================
+
+const tabButtons = document.querySelectorAll(".admin-tab-btn");
+const tabPanels = document.querySelectorAll(".admin-panel");
+
+tabButtons.forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    const target = btn.getAttribute("data-tab");
+
+    tabButtons.forEach(function (b) { b.classList.remove("active"); });
+    tabPanels.forEach(function (p) { p.classList.remove("active"); });
+
+    btn.classList.add("active");
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+// ===========================================
+// Small helper to build a consistent admin list row
+// ===========================================
+
+function buildAdminRow(titleHtml, subtitleText, onEdit, onDelete) {
+  const row = document.createElement("div");
+  row.className = "admin-row";
+
+  const info = document.createElement("div");
+  info.className = "admin-row-info";
+  info.innerHTML =
+    "<strong>" + titleHtml + "</strong>" +
+    (subtitleText ? "<br><span>" + subtitleText + "</span>" : "");
+
+  const actions = document.createElement("div");
+  actions.className = "admin-row-actions";
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.className = "admin-btn-edit";
+  editBtn.addEventListener("click", onEdit);
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.className = "admin-btn-delete";
+  deleteBtn.addEventListener("click", onDelete);
+
+  actions.appendChild(editBtn);
+  actions.appendChild(deleteBtn);
+
+  row.appendChild(info);
+  row.appendChild(actions);
+  return row;
+}
+
+// ===========================================
 // MASS SCHEDULE MANAGER
 // ===========================================
 
@@ -149,7 +203,7 @@ function exitScheduleEditMode() {
 
 onSnapshot(query(collection(db, "massSchedules")), function (snapshot) {
   if (snapshot.empty) {
-    scheduleList.innerHTML = '<p style="text-align:center; color:#888;">No Mass schedules added yet.</p>';
+    scheduleList.innerHTML = '<p class="admin-list-empty">No Mass schedules added yet.</p>';
     return;
   }
 
@@ -165,41 +219,21 @@ onSnapshot(query(collection(db, "massSchedules")), function (snapshot) {
   scheduleList.innerHTML = "";
 
   entries.forEach(function (entry) {
-    const row = document.createElement("div");
-    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
+    const subtitle =
+      (entry.language ? entry.language : "") +
+      (entry.description ? (entry.language ? " · " : "") + entry.description : "");
 
-    const info = document.createElement("div");
-    info.innerHTML =
-      "<strong>" + entry.day + " — " + entry.time + "</strong>" +
-      (entry.language ? " <span style=\"color:#7b5a2c;\">(" + entry.language + ")</span>" : "") +
-      (entry.description ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.description + "</span>" : "");
-
-    const buttons = document.createElement("div");
-    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.className = "book-button";
-    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
-    editBtn.addEventListener("click", function () {
-      enterScheduleEditMode(entry.id, entry);
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.className = "book-button";
-    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
-    deleteBtn.addEventListener("click", function () {
-      if (confirm("Delete the " + entry.day + " " + entry.time + " Mass schedule?")) {
-        deleteDoc(doc(db, "massSchedules", entry.id));
+    const row = buildAdminRow(
+      entry.day + " — " + entry.time,
+      subtitle,
+      function () { enterScheduleEditMode(entry.id, entry); },
+      function () {
+        if (confirm("Delete the " + entry.day + " " + entry.time + " Mass schedule?")) {
+          deleteDoc(doc(db, "massSchedules", entry.id));
+        }
       }
-    });
+    );
 
-    buttons.appendChild(editBtn);
-    buttons.appendChild(deleteBtn);
-
-    row.appendChild(info);
-    row.appendChild(buttons);
     scheduleList.appendChild(row);
   });
 });
@@ -284,7 +318,7 @@ function exitBookEditMode() {
 
 onSnapshot(query(collection(db, "books")), function (snapshot) {
   if (snapshot.empty) {
-    bookList.innerHTML = '<p style="text-align:center; color:#888;">No books added yet.</p>';
+    bookList.innerHTML = '<p class="admin-list-empty">No books added yet.</p>';
     return;
   }
 
@@ -300,41 +334,17 @@ onSnapshot(query(collection(db, "books")), function (snapshot) {
   bookList.innerHTML = "";
 
   entries.forEach(function (entry) {
-    const row = document.createElement("div");
-    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
-
-    const info = document.createElement("div");
-    info.innerHTML =
-      "<strong>" + entry.title + "</strong>" +
-      (entry.author ? " <span style=\"color:#7b5a2c;\">— " + entry.author + "</span>" : "") +
-      (entry.category ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.category + "</span>" : "");
-
-    const buttons = document.createElement("div");
-    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.className = "book-button";
-    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
-    editBtn.addEventListener("click", function () {
-      enterBookEditMode(entry.id, entry);
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.className = "book-button";
-    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
-    deleteBtn.addEventListener("click", function () {
-      if (confirm('Delete "' + entry.title + '"?')) {
-        deleteDoc(doc(db, "books", entry.id));
+    const row = buildAdminRow(
+      entry.title,
+      entry.author ? "by " + entry.author : (entry.category || ""),
+      function () { enterBookEditMode(entry.id, entry); },
+      function () {
+        if (confirm('Delete "' + entry.title + '"?')) {
+          deleteDoc(doc(db, "books", entry.id));
+        }
       }
-    });
+    );
 
-    buttons.appendChild(editBtn);
-    buttons.appendChild(deleteBtn);
-
-    row.appendChild(info);
-    row.appendChild(buttons);
     bookList.appendChild(row);
   });
 });
@@ -425,7 +435,7 @@ function exitSaintEditMode() {
 
 onSnapshot(query(collection(db, "saints")), function (snapshot) {
   if (snapshot.empty) {
-    saintList.innerHTML = '<p style="text-align:center; color:#888;">No saints added yet.</p>';
+    saintList.innerHTML = '<p class="admin-list-empty">No saints added yet.</p>';
     return;
   }
 
@@ -441,40 +451,17 @@ onSnapshot(query(collection(db, "saints")), function (snapshot) {
   saintList.innerHTML = "";
 
   entries.forEach(function (entry) {
-    const row = document.createElement("div");
-    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
-
-    const info = document.createElement("div");
-    info.innerHTML =
-      "<strong>" + entry.name + "</strong>" +
-      (entry.title ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.title + "</span>" : "");
-
-    const buttons = document.createElement("div");
-    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.className = "book-button";
-    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
-    editBtn.addEventListener("click", function () {
-      enterSaintEditMode(entry.id, entry);
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.className = "book-button";
-    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
-    deleteBtn.addEventListener("click", function () {
-      if (confirm('Delete "' + entry.name + '"?')) {
-        deleteDoc(doc(db, "saints", entry.id));
+    const row = buildAdminRow(
+      entry.name,
+      entry.title || "",
+      function () { enterSaintEditMode(entry.id, entry); },
+      function () {
+        if (confirm('Delete "' + entry.name + '"?')) {
+          deleteDoc(doc(db, "saints", entry.id));
+        }
       }
-    });
+    );
 
-    buttons.appendChild(editBtn);
-    buttons.appendChild(deleteBtn);
-
-    row.appendChild(info);
-    row.appendChild(buttons);
     saintList.appendChild(row);
   });
 });
@@ -565,7 +552,7 @@ function exitFatherEditMode() {
 
 onSnapshot(query(collection(db, "fathers")), function (snapshot) {
   if (snapshot.empty) {
-    fatherList.innerHTML = '<p style="text-align:center; color:#888;">No Church Fathers added yet.</p>';
+    fatherList.innerHTML = '<p class="admin-list-empty">No Church Fathers added yet.</p>';
     return;
   }
 
@@ -581,40 +568,17 @@ onSnapshot(query(collection(db, "fathers")), function (snapshot) {
   fatherList.innerHTML = "";
 
   entries.forEach(function (entry) {
-    const row = document.createElement("div");
-    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
-
-    const info = document.createElement("div");
-    info.innerHTML =
-      "<strong>" + entry.name + "</strong>" +
-      (entry.title ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.title + "</span>" : "");
-
-    const buttons = document.createElement("div");
-    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.className = "book-button";
-    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
-    editBtn.addEventListener("click", function () {
-      enterFatherEditMode(entry.id, entry);
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.className = "book-button";
-    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
-    deleteBtn.addEventListener("click", function () {
-      if (confirm('Delete "' + entry.name + '"?')) {
-        deleteDoc(doc(db, "fathers", entry.id));
+    const row = buildAdminRow(
+      entry.name,
+      entry.title || "",
+      function () { enterFatherEditMode(entry.id, entry); },
+      function () {
+        if (confirm('Delete "' + entry.name + '"?')) {
+          deleteDoc(doc(db, "fathers", entry.id));
+        }
       }
-    });
+    );
 
-    buttons.appendChild(editBtn);
-    buttons.appendChild(deleteBtn);
-
-    row.appendChild(info);
-    row.appendChild(buttons);
     fatherList.appendChild(row);
   });
 });
