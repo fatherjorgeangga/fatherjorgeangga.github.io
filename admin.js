@@ -478,3 +478,143 @@ onSnapshot(query(collection(db, "saints")), function (snapshot) {
     saintList.appendChild(row);
   });
 });
+
+// ===========================================
+// CHURCH FATHERS MANAGER
+// ===========================================
+
+const fatherForm = document.getElementById("fatherForm");
+const fatherName = document.getElementById("fatherName");
+const fatherTitle = document.getElementById("fatherTitle");
+const fatherYears = document.getElementById("fatherYears");
+const fatherRegion = document.getElementById("fatherRegion");
+const fatherFeastDay = document.getElementById("fatherFeastDay");
+const fatherMajorWorks = document.getElementById("fatherMajorWorks");
+const fatherBio = document.getElementById("fatherBio");
+const fatherCoverImage = document.getElementById("fatherCoverImage");
+const fatherError = document.getElementById("fatherError");
+const fatherSubmitButton = document.getElementById("fatherSubmitButton");
+const fatherCancelButton = document.getElementById("fatherCancelButton");
+const fatherList = document.getElementById("fatherList");
+
+let editingFatherId = null;
+
+if (fatherForm) {
+  fatherForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    fatherError.textContent = "";
+
+    const data = {
+      name: fatherName.value.trim(),
+      title: fatherTitle.value.trim(),
+      years: fatherYears.value.trim(),
+      region: fatherRegion.value.trim(),
+      feastDay: fatherFeastDay.value.trim(),
+      majorWorks: fatherMajorWorks.value.trim(),
+      bio: fatherBio.value.trim(),
+      coverImage: fatherCoverImage.value.trim()
+    };
+
+    if (!data.name) {
+      fatherError.textContent = "Name is required.";
+      return;
+    }
+
+    const savePromise = editingFatherId
+      ? updateDoc(doc(db, "fathers", editingFatherId), data)
+      : addDoc(collection(db, "fathers"), data);
+
+    savePromise
+      .then(function () {
+        fatherForm.reset();
+        exitFatherEditMode();
+      })
+      .catch(function (error) {
+        fatherError.textContent = "Error saving Church Father: " + error.message;
+      });
+  });
+}
+
+if (fatherCancelButton) {
+  fatherCancelButton.addEventListener("click", function () {
+    fatherForm.reset();
+    exitFatherEditMode();
+  });
+}
+
+function enterFatherEditMode(id, data) {
+  editingFatherId = id;
+  fatherName.value = data.name || "";
+  fatherTitle.value = data.title || "";
+  fatherYears.value = data.years || "";
+  fatherRegion.value = data.region || "";
+  fatherFeastDay.value = data.feastDay || "";
+  fatherMajorWorks.value = data.majorWorks || "";
+  fatherBio.value = data.bio || "";
+  fatherCoverImage.value = data.coverImage || "";
+  fatherSubmitButton.textContent = "Save Changes";
+  fatherCancelButton.style.display = "block";
+  fatherForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function exitFatherEditMode() {
+  editingFatherId = null;
+  fatherSubmitButton.textContent = "Add Church Father";
+  fatherCancelButton.style.display = "none";
+}
+
+onSnapshot(query(collection(db, "fathers")), function (snapshot) {
+  if (snapshot.empty) {
+    fatherList.innerHTML = '<p style="text-align:center; color:#888;">No Church Fathers added yet.</p>';
+    return;
+  }
+
+  const entries = [];
+  snapshot.forEach(function (docSnap) {
+    entries.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  entries.sort(function (a, b) {
+    return a.name.localeCompare(b.name);
+  });
+
+  fatherList.innerHTML = "";
+
+  entries.forEach(function (entry) {
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
+
+    const info = document.createElement("div");
+    info.innerHTML =
+      "<strong>" + entry.name + "</strong>" +
+      (entry.title ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.title + "</span>" : "");
+
+    const buttons = document.createElement("div");
+    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.className = "book-button";
+    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
+    editBtn.addEventListener("click", function () {
+      enterFatherEditMode(entry.id, entry);
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.className = "book-button";
+    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
+    deleteBtn.addEventListener("click", function () {
+      if (confirm('Delete "' + entry.name + '"?')) {
+        deleteDoc(doc(db, "fathers", entry.id));
+      }
+    });
+
+    buttons.appendChild(editBtn);
+    buttons.appendChild(deleteBtn);
+
+    row.appendChild(info);
+    row.appendChild(buttons);
+    fatherList.appendChild(row);
+  });
+});
