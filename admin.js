@@ -39,7 +39,8 @@ const db = getFirestore(app);
 
 const adminNames = {
   "kennmagbanua02@gmail.com": "Kent Magbanua",
-  "kerr35712@gmail.com": "Kerr"
+  "fatherjorgeangga@parish.org": "Fr. Jorge Angga",
+  "petroetpauloalcazaren@parish.org": "Petro et Paulo"
 };
 
 function getDisplayName(email) {
