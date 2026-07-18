@@ -842,3 +842,377 @@ footer hr{
     }
 
 }
+
+/* ===============================================
+   ADMIN PANEL REDESIGN
+   Theme: White / Deep Navy Blue / Black / Gold
+   Signature element: the "banner tabs" — each tab
+   reads like a small pennant with a gold hoist edge,
+   echoing the parish's heraldic motto banner.
+=============================================== */
+
+.admin-shell{
+    max-width:1100px;
+    margin:0 auto;
+    padding:30px 0 60px;
+}
+
+.admin-topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+    background:#0f2340;
+    color:#fff;
+    padding:22px 28px;
+    border-radius:16px;
+    margin-bottom:28px;
+    box-shadow:0 10px 28px rgba(15,35,64,.18);
+}
+
+.admin-topbar-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.admin-topbar-title .badge{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:linear-gradient(145deg,#d4af37,#b8860b);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    flex-shrink:0;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);
+}
+
+.admin-topbar-title h2{
+    margin:0;
+    font-size:22px;
+    color:#fff;
+}
+
+.admin-topbar-title p{
+    margin:2px 0 0;
+    font-size:13px;
+    color:#c9d4e3;
+}
+
+.admin-signout{
+    background:transparent;
+    border:1.5px solid rgba(255,255,255,.4);
+    color:#fff;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.admin-signout:hover{
+    background:#b00020;
+    border-color:#b00020;
+}
+
+/* ---- Banner tabs ---- */
+
+.admin-tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:26px;
+}
+
+.admin-tab-btn{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1.5px solid #e2e6ec;
+    color:#0f2340;
+    padding:12px 20px;
+    border-radius:10px 10px 4px 4px;
+    font-weight:bold;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 2px 6px rgba(15,35,64,.06);
+}
+
+.admin-tab-btn .count{
+    background:#eef1f6;
+    color:#0f2340;
+    font-size:12px;
+    font-weight:bold;
+    padding:2px 8px;
+    border-radius:20px;
+}
+
+.admin-tab-btn:hover{
+    border-color:#d4af37;
+    transform:translateY(-2px);
+}
+
+.admin-tab-btn.active{
+    background:#0f2340;
+    color:#fff;
+    border-color:#0f2340;
+}
+
+.admin-tab-btn.active .count{
+    background:#d4af37;
+    color:#14161a;
+}
+
+.admin-tab-btn.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-6px;
+    height:4px;
+    background:#d4af37;
+    border-radius:4px;
+    margin:0 6px;
+}
+
+/* ---- Panels ---- */
+
+.admin-panel{
+    display:none;
+}
+
+.admin-panel.active{
+    display:block;
+    animation:adminFadeIn .25s ease;
+}
+
+@keyframes adminFadeIn{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.admin-panel-grid{
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:26px;
+    align-items:start;
+}
+
+@media(max-width:900px){
+    .admin-panel-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.admin-card{
+    background:#fff;
+    border-radius:16px;
+    padding:28px;
+    box-shadow:0 6px 20px rgba(15,35,64,.08);
+    border:1px solid #eef1f6;
+}
+
+.admin-card h2{
+    margin-top:0;
+    font-size:19px;
+    color:#0f2340;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border-bottom:2px solid #f4af374d;
+    padding-bottom:14px;
+    margin-bottom:18px;
+}
+
+.admin-card label{
+    display:block;
+    font-weight:bold;
+    color:#0f2340;
+    margin-bottom:6px;
+    margin-top:16px;
+    font-size:13px;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+}
+
+.admin-card label:first-of-type{
+    margin-top:0;
+}
+
+.admin-card input,
+.admin-card select{
+    width:100%;
+    padding:12px 14px;
+    font-size:15px;
+    border:1.5px solid #e2e6ec;
+    border-radius:10px;
+    box-sizing:border-box;
+    transition:border-color .2s, box-shadow .2s;
+    background:#fbfcfe;
+}
+
+.admin-card input:focus,
+.admin-card select:focus{
+    outline:none;
+    border-color:#0f2340;
+    box-shadow:0 0 0 3px rgba(15,35,64,.1);
+    background:#fff;
+}
+
+.admin-submit{
+    width:100%;
+    margin-top:22px;
+    border:none;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    padding:14px;
+    border-radius:10px;
+    background:#0f2340;
+    color:#fff;
+    transition:.2s;
+}
+
+.admin-submit:hover{
+    background:#173a66;
+}
+
+.admin-cancel{
+    width:100%;
+    margin-top:10px;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    padding:12px;
+    border-radius:10px;
+    background:#f2f4f7;
+    color:#555;
+}
+
+.admin-cancel:hover{
+    background:#e6e9ee;
+}
+
+.admin-list{
+    max-height:640px;
+    overflow-y:auto;
+    padding-right:4px;
+}
+
+.admin-list-empty{
+    text-align:center;
+    color:#9aa2ad;
+    padding:30px 10px;
+}
+
+.admin-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:14px 12px;
+    border-radius:10px;
+    flex-wrap:wrap;
+    transition:.15s;
+}
+
+.admin-row:hover{
+    background:#f7f9fc;
+}
+
+.admin-row + .admin-row{
+    border-top:1px solid #f0f2f5;
+}
+
+.admin-row-info strong{
+    color:#0f2340;
+}
+
+.admin-row-info span{
+    color:#7c8593;
+    font-size:13px;
+}
+
+.admin-row-actions{
+    display:flex;
+    gap:8px;
+    flex-shrink:0;
+}
+
+.admin-btn-edit,
+.admin-btn-delete{
+    border:none;
+    cursor:pointer;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+    color:#fff;
+    transition:.15s;
+}
+
+.admin-btn-edit{
+    background:#d4af37;
+    color:#14161a;
+}
+
+.admin-btn-edit:hover{
+    background:#c39d2b;
+}
+
+.admin-btn-delete{
+    background:#b00020;
+}
+
+.admin-btn-delete:hover{
+    background:#8a0018;
+}
+
+.admin-error{
+    color:#b00020;
+    background:#fdecee;
+    font-size:13.5px;
+    border-radius:8px;
+    margin-top:14px;
+    min-height:0;
+    padding:0;
+    transition:padding .2s;
+}
+
+.admin-error:not(:empty){
+    padding:10px 14px;
+}
+
+@media(max-width:768px){
+    .admin-shell{
+        padding:16px 12px 50px;
+    }
+
+    .admin-topbar{
+        padding:18px 20px;
+        border-radius:14px;
+    }
+
+    .admin-tabs{
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding-bottom:4px;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    .admin-tab-btn{
+        flex-shrink:0;
+    }
+
+    .admin-card{
+        padding:20px;
+    }
+}
