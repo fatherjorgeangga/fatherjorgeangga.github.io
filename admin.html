@@ -280,6 +280,70 @@ Log Out
 
 </div>
 
+<!-- ===========================
+     CHURCH FATHERS MANAGER
+=========================== -->
+
+<div class="card">
+
+<h2>👨‍🏫 Manage Church Fathers</h2>
+
+<form id="fatherForm">
+
+<label for="fatherName">Name</label>
+
+<input type="text" id="fatherName" placeholder="e.g. St. Augustine" required>
+
+<label for="fatherTitle">Title</label>
+
+<input type="text" id="fatherTitle" placeholder="e.g. Bishop of Hippo">
+
+<label for="fatherYears">Years</label>
+
+<input type="text" id="fatherYears" placeholder="e.g. 354–430 AD">
+
+<label for="fatherRegion">Region</label>
+
+<input type="text" id="fatherRegion" placeholder="e.g. North Africa">
+
+<label for="fatherFeastDay">Feast Day</label>
+
+<input type="text" id="fatherFeastDay" placeholder="e.g. August 28">
+
+<label for="fatherMajorWorks">Major Works (comma-separated)</label>
+
+<input type="text" id="fatherMajorWorks" placeholder="e.g. Confessions, City of God, On the Trinity">
+
+<label for="fatherBio">Short Biography</label>
+
+<input type="text" id="fatherBio" placeholder="A short paragraph about this Church Father">
+
+<label for="fatherCoverImage">Portrait Image URL (optional)</label>
+
+<input type="text" id="fatherCoverImage" placeholder="e.g. images/fathers/augustine.jpg">
+
+<div id="fatherError" class="error-message"></div>
+
+<button type="submit" class="button login-button" id="fatherSubmitButton">Add Church Father</button>
+
+<button type="button" class="button logout-button" id="fatherCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+
+</form>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Current Church Fathers</h2>
+
+<div id="fatherList">
+
+<p style="text-align:center; color:#888;">Loading Church Fathers...</p>
+
+</div>
+
+</div>
+
 </div>
 
 <footer>
