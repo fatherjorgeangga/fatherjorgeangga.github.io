@@ -1,127 +1,54 @@
-// ===========================================
-// Firebase setup
-// ===========================================
+document.addEventListener('DOMContentLoaded', function () {
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+  // Hamburger menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCjaYeBaaQMBH43eR0XIVyAlopxS6Ku3u0",
-  authDomain: "saintmichaeltibuloy.firebaseapp.com",
-  projectId: "saintmichaeltibuloy",
-  storageBucket: "saintmichaeltibuloy.firebasestorage.app",
-  messagingSenderId: "192594665363",
-  appId: "1:192594665363:web:b030585199d7beb5cd5266"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// ===========================================
-// Display the saints grid (read-only, public)
-// ===========================================
-
-const saintGrid = document.getElementById("saintGrid");
-
-onSnapshot(collection(db, "saints"), function (snapshot) {
-  if (snapshot.empty) {
-    saintGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No saints added yet. Please check back soon.</p>';
-    return;
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', function () {
+      navLinks.classList.toggle('show');
+    });
   }
 
-  const entries = [];
-  snapshot.forEach(function (docSnap) {
-    entries.push(docSnap.data());
+  // Automatically highlight the current page's nav link
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a').forEach(function (link) {
+    const linkPage = link.getAttribute('href');
+    link.classList.toggle('active', linkPage === currentPage);
   });
 
-  entries.sort(function (a, b) {
-    return a.name.localeCompare(b.name);
-  });
-
-  saintGrid.innerHTML = "";
-
-  entries.forEach(function (entry) {
-    const card = document.createElement("div");
-    card.className = "book-card searchable";
-
-    const cover = document.createElement("div");
-    cover.className = "book-cover";
-
-    if (entry.coverImage) {
-      const img = document.createElement("img");
-      img.src = entry.coverImage;
-      img.alt = entry.name;
-      img.className = "book-image top";
-      cover.appendChild(img);
-    } else {
-      cover.textContent = "⛪";
-    }
-
-    const content = document.createElement("div");
-    content.className = "book-content";
-
-    const nameEl = document.createElement("h3");
-    nameEl.textContent = entry.name;
-    content.appendChild(nameEl);
-
-    if (entry.years) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Years:</strong> " + entry.years;
-      content.appendChild(p);
-    }
-
-    if (entry.title) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Title:</strong> " + entry.title;
-      content.appendChild(p);
-    }
-
-    if (entry.feastDay) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Feast Day:</strong> " + entry.feastDay;
-      content.appendChild(p);
-    }
-
-    if (entry.patronage) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Patronage:</strong> " + entry.patronage;
-      content.appendChild(p);
-    }
-
-    if (entry.majorWorks) {
-      const label = document.createElement("p");
-      label.innerHTML = "<strong>Major Works:</strong>";
-      content.appendChild(label);
-
-      const ul = document.createElement("ul");
-      entry.majorWorks.split(",").forEach(function (work) {
-        const trimmed = work.trim();
-        if (!trimmed) return;
-        const li = document.createElement("li");
-        li.textContent = trimmed;
-        ul.appendChild(li);
+  // Book / Church Father search filter (works for both #searchBox and #globalSearch)
+  const searchBox = document.getElementById('searchBox') || document.getElementById('globalSearch');
+  if (searchBox) {
+    searchBox.addEventListener('keyup', function () {
+      const search = searchBox.value.toLowerCase();
+      document.querySelectorAll('.searchable').forEach(function (item) {
+        item.style.display = item.innerText.toLowerCase().includes(search) ? 'block' : 'none';
       });
-      content.appendChild(ul);
-    }
+    });
+  }
 
-    if (entry.bio) {
-      const p = document.createElement("p");
-      p.textContent = entry.bio;
-      content.appendChild(p);
-    }
-
-    const btn = document.createElement("a");
-    btn.className = "book-button";
-    btn.href = "#";
-    btn.textContent = "Biography";
-    content.appendChild(btn);
-
-    card.appendChild(cover);
-    card.appendChild(content);
-    saintGrid.appendChild(card);
-  });
 });
+
+// Auto-count entries from other pages (only runs on index.html)
+  const countTargets = [
+    { file: 'fathers.html', elementId: 'count-fathers' },
+    { file: 'councils.html', elementId: 'count-councils' },
+    { file: 'saints.html', elementId: 'count-saints' },
+    { file: 'books.html', elementId: 'count-books' }
+  ];
+
+  countTargets.forEach(function (target) {
+    const el = document.getElementById(target.elementId);
+    if (!el) return;
+
+    fetch(target.file)
+      .then(function (response) { return response.text(); })
+      .then(function (html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const count = doc.querySelectorAll('.book-card, .card').length;
+        el.textContent = count;
+      })
+      .catch(function () {});
+  });
