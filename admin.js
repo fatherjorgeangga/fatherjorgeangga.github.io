@@ -338,3 +338,143 @@ onSnapshot(query(collection(db, "books")), function (snapshot) {
     bookList.appendChild(row);
   });
 });
+
+// ===========================================
+// SAINTS MANAGER
+// ===========================================
+
+const saintForm = document.getElementById("saintForm");
+const saintName = document.getElementById("saintName");
+const saintTitle = document.getElementById("saintTitle");
+const saintYears = document.getElementById("saintYears");
+const saintFeastDay = document.getElementById("saintFeastDay");
+const saintPatronage = document.getElementById("saintPatronage");
+const saintMajorWorks = document.getElementById("saintMajorWorks");
+const saintBio = document.getElementById("saintBio");
+const saintCoverImage = document.getElementById("saintCoverImage");
+const saintError = document.getElementById("saintError");
+const saintSubmitButton = document.getElementById("saintSubmitButton");
+const saintCancelButton = document.getElementById("saintCancelButton");
+const saintList = document.getElementById("saintList");
+
+let editingSaintId = null;
+
+if (saintForm) {
+  saintForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    saintError.textContent = "";
+
+    const data = {
+      name: saintName.value.trim(),
+      title: saintTitle.value.trim(),
+      years: saintYears.value.trim(),
+      feastDay: saintFeastDay.value.trim(),
+      patronage: saintPatronage.value.trim(),
+      majorWorks: saintMajorWorks.value.trim(),
+      bio: saintBio.value.trim(),
+      coverImage: saintCoverImage.value.trim()
+    };
+
+    if (!data.name) {
+      saintError.textContent = "Name is required.";
+      return;
+    }
+
+    const savePromise = editingSaintId
+      ? updateDoc(doc(db, "saints", editingSaintId), data)
+      : addDoc(collection(db, "saints"), data);
+
+    savePromise
+      .then(function () {
+        saintForm.reset();
+        exitSaintEditMode();
+      })
+      .catch(function (error) {
+        saintError.textContent = "Error saving saint: " + error.message;
+      });
+  });
+}
+
+if (saintCancelButton) {
+  saintCancelButton.addEventListener("click", function () {
+    saintForm.reset();
+    exitSaintEditMode();
+  });
+}
+
+function enterSaintEditMode(id, data) {
+  editingSaintId = id;
+  saintName.value = data.name || "";
+  saintTitle.value = data.title || "";
+  saintYears.value = data.years || "";
+  saintFeastDay.value = data.feastDay || "";
+  saintPatronage.value = data.patronage || "";
+  saintMajorWorks.value = data.majorWorks || "";
+  saintBio.value = data.bio || "";
+  saintCoverImage.value = data.coverImage || "";
+  saintSubmitButton.textContent = "Save Changes";
+  saintCancelButton.style.display = "block";
+  saintForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function exitSaintEditMode() {
+  editingSaintId = null;
+  saintSubmitButton.textContent = "Add Saint";
+  saintCancelButton.style.display = "none";
+}
+
+onSnapshot(query(collection(db, "saints")), function (snapshot) {
+  if (snapshot.empty) {
+    saintList.innerHTML = '<p style="text-align:center; color:#888;">No saints added yet.</p>';
+    return;
+  }
+
+  const entries = [];
+  snapshot.forEach(function (docSnap) {
+    entries.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  entries.sort(function (a, b) {
+    return a.name.localeCompare(b.name);
+  });
+
+  saintList.innerHTML = "";
+
+  entries.forEach(function (entry) {
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee; flex-wrap:wrap; gap:10px;";
+
+    const info = document.createElement("div");
+    info.innerHTML =
+      "<strong>" + entry.name + "</strong>" +
+      (entry.title ? "<br><span style=\"color:#666; font-size:14px;\">" + entry.title + "</span>" : "");
+
+    const buttons = document.createElement("div");
+    buttons.style.cssText = "display:flex; gap:8px; flex-shrink:0;";
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.className = "book-button";
+    editBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px;";
+    editBtn.addEventListener("click", function () {
+      enterSaintEditMode(entry.id, entry);
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.className = "book-button";
+    deleteBtn.style.cssText = "border:none; cursor:pointer; padding:8px 16px; background:#b00020;";
+    deleteBtn.addEventListener("click", function () {
+      if (confirm('Delete "' + entry.name + '"?')) {
+        deleteDoc(doc(db, "saints", entry.id));
+      }
+    });
+
+    buttons.appendChild(editBtn);
+    buttons.appendChild(deleteBtn);
+
+    row.appendChild(info);
+    row.appendChild(buttons);
+    saintList.appendChild(row);
+  });
+});
