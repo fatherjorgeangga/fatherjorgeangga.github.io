@@ -23,6 +23,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // ===========================================
+// Known admins
+// ===========================================
+
+const adminNames = {
+  "kennmagbanua02@gmail.com": "Kent Magbanua",
+  "fatherjorgeangga@parish.org": "Fr. Jorge Angga",
+  "petroetpauloalcazaren@parish.org": "Petro et Paulo"
+};
+
+function getDisplayName(email) {
+  return adminNames[email] || email;
+}
+
+// ===========================================
 // Page elements
 // ===========================================
 
@@ -76,7 +90,7 @@ onAuthStateChanged(auth, function (user) {
     if (loginForm) loginForm.style.display = "none";
     if (loggedInBox) {
       loggedInBox.style.display = "block";
-      userEmailDisplay.textContent = user.email;
+      userEmailDisplay.textContent = getDisplayName(user.email);
     }
   } else {
     if (loginForm) loginForm.style.display = "block";
