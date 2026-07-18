@@ -29,7 +29,7 @@ const fatherGrid = document.getElementById("fatherGrid");
 
 onSnapshot(collection(db, "fathers"), function (snapshot) {
   if (snapshot.empty) {
-    fatherGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No Church Fathers added yet. Please check back soon.</p>';
+    fatherGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No additional Church Fathers have been added yet.</p>';
     return;
   }
 
