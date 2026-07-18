@@ -83,23 +83,41 @@ alt="Saint Michael Archives Logo">
 
 <!-- Shown only once login is confirmed -->
 
-<div id="adminContent" class="container" style="display:none;">
+<div id="adminContent" class="admin-shell" style="display:none;">
 
-<div class="login-box" style="max-width:600px;">
+<div class="admin-topbar">
 
-<h2>🔐 Admin Panel</h2>
+<div class="admin-topbar-title">
 
-<p class="subtitle">
+<div class="badge">🛡️</div>
 
-Signed in as <strong id="userEmail"></strong>
+<div>
 
-</p>
+<h2>Admin Panel</h2>
 
-<button id="logoutButton" class="button logout-button" style="width:100%; border:none; cursor:pointer; margin-bottom:10px;">
+<p>Signed in as <strong id="userEmail"></strong></p>
 
-Log Out
+</div>
 
-</button>
+</div>
+
+<button id="logoutButton" class="admin-signout">Log Out</button>
+
+</div>
+
+<!-- ===========================
+     TABS
+=========================== -->
+
+<div class="admin-tabs">
+
+<button class="admin-tab-btn active" data-tab="tab-mass">🗓️ Mass Schedule</button>
+
+<button class="admin-tab-btn" data-tab="tab-books">📚 Books</button>
+
+<button class="admin-tab-btn" data-tab="tab-saints">⛪ Saints</button>
+
+<button class="admin-tab-btn" data-tab="tab-fathers">👨‍🏫 Church Fathers</button>
 
 </div>
 
@@ -107,9 +125,13 @@ Log Out
      MASS SCHEDULE MANAGER
 =========================== -->
 
-<div class="card">
+<div id="tab-mass" class="admin-panel active">
 
-<h2>🗓️ Manage Mass Schedules</h2>
+<div class="admin-panel-grid">
+
+<div class="admin-card">
+
+<h2>🗓️ Add / Edit Mass Schedule</h2>
 
 <form id="scheduleForm">
 
@@ -138,23 +160,27 @@ Log Out
 
 <input type="text" id="scheduleDescription" placeholder="e.g. Main Chapel, First Fridays only">
 
-<div id="scheduleError" class="error-message"></div>
+<div id="scheduleError" class="admin-error"></div>
 
-<button type="submit" class="button login-button" id="scheduleSubmitButton">Add Mass Schedule</button>
+<button type="submit" class="admin-submit" id="scheduleSubmitButton">Add Mass Schedule</button>
 
-<button type="button" class="button logout-button" id="scheduleCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+<button type="button" class="admin-cancel" id="scheduleCancelButton" style="display:none;">Cancel Edit</button>
 
 </form>
 
 </div>
 
-<div class="card">
+<div class="admin-card">
 
 <h2>📋 Current Schedule</h2>
 
-<div id="scheduleList">
+<div id="scheduleList" class="admin-list">
 
-<p style="text-align:center; color:#888;">Loading schedules...</p>
+<p class="admin-list-empty">Loading schedules...</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -164,9 +190,13 @@ Log Out
      BOOKS MANAGER
 =========================== -->
 
-<div class="card">
+<div id="tab-books" class="admin-panel">
 
-<h2>📚 Manage Books</h2>
+<div class="admin-panel-grid">
+
+<div class="admin-card">
+
+<h2>📚 Add / Edit Book</h2>
 
 <form id="bookForm">
 
@@ -194,23 +224,27 @@ Log Out
 
 <input type="text" id="bookPdfLink" placeholder="e.g. books/mybook.pdf">
 
-<div id="bookError" class="error-message"></div>
+<div id="bookError" class="admin-error"></div>
 
-<button type="submit" class="button login-button" id="bookSubmitButton">Add Book</button>
+<button type="submit" class="admin-submit" id="bookSubmitButton">Add Book</button>
 
-<button type="button" class="button logout-button" id="bookCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+<button type="button" class="admin-cancel" id="bookCancelButton" style="display:none;">Cancel Edit</button>
 
 </form>
 
 </div>
 
-<div class="card">
+<div class="admin-card">
 
 <h2>📋 Current Books</h2>
 
-<div id="bookList">
+<div id="bookList" class="admin-list">
 
-<p style="text-align:center; color:#888;">Loading books...</p>
+<p class="admin-list-empty">Loading books...</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -220,9 +254,13 @@ Log Out
      SAINTS MANAGER
 =========================== -->
 
-<div class="card">
+<div id="tab-saints" class="admin-panel">
 
-<h2>⛪ Manage Saints</h2>
+<div class="admin-panel-grid">
+
+<div class="admin-card">
+
+<h2>⛪ Add / Edit Saint</h2>
 
 <form id="saintForm">
 
@@ -258,23 +296,27 @@ Log Out
 
 <input type="text" id="saintCoverImage" placeholder="e.g. images/saints/michael.jpg">
 
-<div id="saintError" class="error-message"></div>
+<div id="saintError" class="admin-error"></div>
 
-<button type="submit" class="button login-button" id="saintSubmitButton">Add Saint</button>
+<button type="submit" class="admin-submit" id="saintSubmitButton">Add Saint</button>
 
-<button type="button" class="button logout-button" id="saintCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+<button type="button" class="admin-cancel" id="saintCancelButton" style="display:none;">Cancel Edit</button>
 
 </form>
 
 </div>
 
-<div class="card">
+<div class="admin-card">
 
 <h2>📋 Current Saints</h2>
 
-<div id="saintList">
+<div id="saintList" class="admin-list">
 
-<p style="text-align:center; color:#888;">Loading saints...</p>
+<p class="admin-list-empty">Loading saints...</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -284,9 +326,13 @@ Log Out
      CHURCH FATHERS MANAGER
 =========================== -->
 
-<div class="card">
+<div id="tab-fathers" class="admin-panel">
 
-<h2>👨‍🏫 Manage Church Fathers</h2>
+<div class="admin-panel-grid">
+
+<div class="admin-card">
+
+<h2>👨‍🏫 Add / Edit Church Father</h2>
 
 <form id="fatherForm">
 
@@ -322,23 +368,27 @@ Log Out
 
 <input type="text" id="fatherCoverImage" placeholder="e.g. images/fathers/augustine.jpg">
 
-<div id="fatherError" class="error-message"></div>
+<div id="fatherError" class="admin-error"></div>
 
-<button type="submit" class="button login-button" id="fatherSubmitButton">Add Church Father</button>
+<button type="submit" class="admin-submit" id="fatherSubmitButton">Add Church Father</button>
 
-<button type="button" class="button logout-button" id="fatherCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+<button type="button" class="admin-cancel" id="fatherCancelButton" style="display:none;">Cancel Edit</button>
 
 </form>
 
 </div>
 
-<div class="card">
+<div class="admin-card">
 
 <h2>📋 Current Church Fathers</h2>
 
-<div id="fatherList">
+<div id="fatherList" class="admin-list">
 
-<p style="text-align:center; color:#888;">Loading Church Fathers...</p>
+<p class="admin-list-empty">Loading Church Fathers...</p>
+
+</div>
+
+</div>
 
 </div>
 
