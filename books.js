@@ -22,14 +22,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ===========================================
-// Display the book grid (read-only, public)
+// Display the saints grid (read-only, public)
 // ===========================================
 
-const bookGrid = document.getElementById("bookGrid");
+const saintGrid = document.getElementById("saintGrid");
 
-onSnapshot(collection(db, "books"), function (snapshot) {
+onSnapshot(collection(db, "saints"), function (snapshot) {
   if (snapshot.empty) {
-    bookGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No books added yet. Please check back soon.</p>';
+    saintGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No saints added yet. Please check back soon.</p>';
     return;
   }
 
@@ -39,10 +39,10 @@ onSnapshot(collection(db, "books"), function (snapshot) {
   });
 
   entries.sort(function (a, b) {
-    return a.title.localeCompare(b.title);
+    return a.name.localeCompare(b.name);
   });
 
-  bookGrid.innerHTML = "";
+  saintGrid.innerHTML = "";
 
   entries.forEach(function (entry) {
     const card = document.createElement("div");
@@ -54,52 +54,74 @@ onSnapshot(collection(db, "books"), function (snapshot) {
     if (entry.coverImage) {
       const img = document.createElement("img");
       img.src = entry.coverImage;
-      img.alt = entry.title;
-      img.className = "book-image";
+      img.alt = entry.name;
+      img.className = "book-image top";
       cover.appendChild(img);
     } else {
-      cover.textContent = "📖";
+      cover.textContent = "⛪";
     }
 
     const content = document.createElement("div");
     content.className = "book-content";
 
-    const titleEl = document.createElement("h3");
-    titleEl.textContent = entry.title;
-    content.appendChild(titleEl);
+    const nameEl = document.createElement("h3");
+    nameEl.textContent = entry.name;
+    content.appendChild(nameEl);
 
-    if (entry.author) {
-      const authorEl = document.createElement("p");
-      authorEl.innerHTML = "<strong>Author:</strong> " + entry.author;
-      content.appendChild(authorEl);
+    if (entry.years) {
+      const p = document.createElement("p");
+      p.innerHTML = "<strong>Years:</strong> " + entry.years;
+      content.appendChild(p);
     }
 
-    if (entry.category) {
-      const categoryEl = document.createElement("p");
-      categoryEl.innerHTML = "<strong>Category:</strong> " + entry.category;
-      content.appendChild(categoryEl);
+    if (entry.title) {
+      const p = document.createElement("p");
+      p.innerHTML = "<strong>Title:</strong> " + entry.title;
+      content.appendChild(p);
     }
 
-    if (entry.description) {
-      const descEl = document.createElement("p");
-      descEl.textContent = entry.description;
-      content.appendChild(descEl);
+    if (entry.feastDay) {
+      const p = document.createElement("p");
+      p.innerHTML = "<strong>Feast Day:</strong> " + entry.feastDay;
+      content.appendChild(p);
     }
 
-    const linkEl = document.createElement("a");
-    linkEl.className = "book-button";
-    if (entry.pdfLink) {
-      linkEl.href = entry.pdfLink;
-      linkEl.target = "_blank";
-      linkEl.textContent = "Read PDF";
-    } else {
-      linkEl.href = "#";
-      linkEl.textContent = "Coming Soon";
+    if (entry.patronage) {
+      const p = document.createElement("p");
+      p.innerHTML = "<strong>Patronage:</strong> " + entry.patronage;
+      content.appendChild(p);
     }
-    content.appendChild(linkEl);
+
+    if (entry.majorWorks) {
+      const label = document.createElement("p");
+      label.innerHTML = "<strong>Major Works:</strong>";
+      content.appendChild(label);
+
+      const ul = document.createElement("ul");
+      entry.majorWorks.split(",").forEach(function (work) {
+        const trimmed = work.trim();
+        if (!trimmed) return;
+        const li = document.createElement("li");
+        li.textContent = trimmed;
+        ul.appendChild(li);
+      });
+      content.appendChild(ul);
+    }
+
+    if (entry.bio) {
+      const p = document.createElement("p");
+      p.textContent = entry.bio;
+      content.appendChild(p);
+    }
+
+    const btn = document.createElement("a");
+    btn.className = "book-button";
+    btn.href = "#";
+    btn.textContent = "Biography";
+    content.appendChild(btn);
 
     card.appendChild(cover);
     card.appendChild(content);
-    bookGrid.appendChild(card);
+    saintGrid.appendChild(card);
   });
 });
