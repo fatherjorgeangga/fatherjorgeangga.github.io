@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel | Saint Michael Archives</title>
+
+<link rel="icon" href="logo2.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<a href="index.html">
+
+<img src="images/newlogo.png"
+width="140"
+alt="Saint Michael Archives Logo">
+
+</a>
+
+<h1>Office Of Exorcism</h1>
+  
+<h2>St. Michael the Archangel Parish</h2>
+
+</header>
+
+<nav>
+
+<button class="menu-toggle">
+
+☰ Menu
+
+</button>
+
+<div class="nav-links">
+
+<a href="index.html">🏠 Home</a>
+
+<a href="books.html">📚 Books</a>
+
+<a href="search.html">🔎 Search</a>
+
+<a href="saints.html">⛪ Saints</a>
+
+<a href="fathers.html">👨‍🏫 Church Fathers</a>
+
+<a href="councils.html">📜 Councils</a>
+
+<a href="about.html">ℹ About</a>
+
+</div>
+
+</nav>
+
+<div class="breadcrumb">
+
+<a href="index.html">🏠 Home</a>
+
+<span>&gt;</span>
+
+🔐 Admin Panel
+
+</div>
+
+<!-- Shown briefly while we check if you're logged in -->
+
+<div id="checkingAuth" class="container">
+
+<p style="text-align:center;">Checking login status...</p>
+
+</div>
+
+<!-- Shown only once login is confirmed -->
+
+<div id="adminContent" class="container" style="display:none;">
+
+<div class="login-box" style="max-width:600px;">
+
+<h2>🔐 Admin Panel</h2>
+
+<p class="subtitle">
+
+Signed in as <strong id="userEmail"></strong>
+
+</p>
+
+<button id="logoutButton" class="button logout-button" style="width:100%; border:none; cursor:pointer; margin-bottom:10px;">
+
+Log Out
+
+</button>
+
+</div>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+
+<h3>📚 Manage Books</h3>
+
+<p>
+
+Add, edit, or remove books from the Library Collection.
+
+</p>
+
+<a href="#" class="feature-button">
+
+Coming Soon
+
+</a>
+
+</div>
+
+<div class="feature-card">
+
+<h3>🗓️ Mass Schedules</h3>
+
+<p>
+
+Add, edit, or remove Mass times and schedule announcements.
+
+</p>
+
+<a href="#" class="feature-button">
+
+Coming Soon
+
+</a>
+
+</div>
+
+<div class="feature-card">
+
+<h3>⛪ Manage Saints</h3>
+
+<p>
+
+Add, edit, or remove Saint profiles.
+
+</p>
+
+<a href="#" class="feature-button">
+
+Coming Soon
+
+</a>
+
+</div>
+
+<div class="feature-card">
+
+<h3>👨‍🏫 Church Fathers</h3>
+
+<p>
+
+Add, edit, or remove Church Father profiles.
+
+</p>
+
+<a href="#" class="feature-button">
+
+Coming Soon
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<div class="footer-container">
+
+<div class="footer-column">
+
+<h3>🏛 Saint Michael Archives</h3>
+
+<p>
+
+Administrator area — parish staff and clergy only.
+
+</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+
+© 2026 Saint Michael Archives
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+
+</html>
