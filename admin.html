@@ -101,77 +101,58 @@ Log Out
 
 </div>
 
-<div class="feature-grid">
+<!-- ===========================
+     MASS SCHEDULE MANAGER
+=========================== -->
 
-<div class="feature-card">
+<div class="card">
 
-<h3>📚 Manage Books</h3>
+<h2>🗓️ Manage Mass Schedules</h2>
 
-<p>
+<form id="scheduleForm">
 
-Add, edit, or remove books from the Library Collection.
+<label for="scheduleDay">Day</label>
 
-</p>
+<select id="scheduleDay" required>
+<option value="">Select a day</option>
+<option>Sunday</option>
+<option>Monday</option>
+<option>Tuesday</option>
+<option>Wednesday</option>
+<option>Thursday</option>
+<option>Friday</option>
+<option>Saturday</option>
+</select>
 
-<a href="#" class="feature-button">
+<label for="scheduleTime">Time</label>
 
-Coming Soon
+<input type="text" id="scheduleTime" placeholder="e.g. 7:00 AM" required>
 
-</a>
+<label for="scheduleLanguage">Language / Notes</label>
 
-</div>
+<input type="text" id="scheduleLanguage" placeholder="e.g. English, Latin, Tagalog">
 
-<div class="feature-card">
+<label for="scheduleDescription">Additional Details (optional)</label>
 
-<h3>🗓️ Mass Schedules</h3>
+<input type="text" id="scheduleDescription" placeholder="e.g. Main Chapel, First Fridays only">
 
-<p>
+<div id="scheduleError" class="error-message"></div>
 
-Add, edit, or remove Mass times and schedule announcements.
+<button type="submit" class="button login-button" id="scheduleSubmitButton">Add Mass Schedule</button>
 
-</p>
+<button type="button" class="button logout-button" id="scheduleCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
 
-<a href="#" class="feature-button">
-
-Coming Soon
-
-</a>
-
-</div>
-
-<div class="feature-card">
-
-<h3>⛪ Manage Saints</h3>
-
-<p>
-
-Add, edit, or remove Saint profiles.
-
-</p>
-
-<a href="#" class="feature-button">
-
-Coming Soon
-
-</a>
+</form>
 
 </div>
 
-<div class="feature-card">
+<div class="card">
 
-<h3>👨‍🏫 Church Fathers</h3>
+<h2>📋 Current Schedule</h2>
 
-<p>
+<div id="scheduleList">
 
-Add, edit, or remove Church Father profiles.
-
-</p>
-
-<a href="#" class="feature-button">
-
-Coming Soon
-
-</a>
+<p style="text-align:center; color:#888;">Loading schedules...</p>
 
 </div>
 
