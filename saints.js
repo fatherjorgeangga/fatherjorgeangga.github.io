@@ -29,7 +29,7 @@ const saintGrid = document.getElementById("saintGrid");
 
 onSnapshot(collection(db, "saints"), function (snapshot) {
   if (snapshot.empty) {
-    saintGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No saints added yet. Please check back soon.</p>';
+    saintGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No additional saints have been added yet.</p>';
     return;
   }
 
