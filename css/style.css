@@ -526,6 +526,124 @@ footer hr{
     color:#888;
 }
 
+/* ===============================
+   ADMIN LOGIN PAGE
+=============================== */
+
+.login-box{
+    max-width:420px;
+    margin:60px auto;
+    background:white;
+    padding:45px 40px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.login-box h2{
+    color:#4b2e12;
+    margin-top:0;
+    margin-bottom:8px;
+    font-size:28px;
+}
+
+.login-box .subtitle{
+    font-size:15px;
+    color:#777;
+    margin-bottom:30px;
+    line-height:1.6;
+}
+
+.login-box form{
+    text-align:left;
+}
+
+.login-box label{
+    display:block;
+    font-weight:bold;
+    color:#4b2e12;
+    margin-bottom:6px;
+    margin-top:20px;
+    font-size:14px;
+    letter-spacing:.3px;
+}
+
+.login-box label:first-of-type{
+    margin-top:0;
+}
+
+.login-box input{
+    width:100%;
+    padding:14px 16px;
+    font-size:16px;
+    border:1.5px solid #ddd;
+    border-radius:10px;
+    box-sizing:border-box;
+    transition:border-color .2s, box-shadow .2s;
+    -webkit-appearance:none;
+}
+
+.login-box input:focus{
+    outline:none;
+    border-color:#4b2e12;
+    box-shadow:0 0 0 3px rgba(75,46,18,.1);
+}
+
+.error-message{
+    color:#b00020;
+    background:#fdecee;
+    font-size:14px;
+    padding:0;
+    border-radius:8px;
+    margin-top:14px;
+    min-height:0;
+    transition:padding .2s;
+}
+
+.error-message:not(:empty){
+    padding:10px 14px;
+}
+
+.login-button{
+    width:100%;
+    margin-top:28px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    padding:15px;
+    letter-spacing:.3px;
+}
+
+.logged-in-box{
+    text-align:center;
+}
+
+.logged-in-box p{
+    font-size:16px;
+    color:#555;
+    margin-bottom:20px;
+    word-break:break-word;
+}
+
+.logged-in-box .button{
+    display:block;
+    width:100%;
+    margin-bottom:12px;
+    box-sizing:border-box;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    padding:14px;
+}
+
+.logout-button{
+    background:#b00020;
+}
+
+.logout-button:hover{
+    background:#8a0018;
+}
+
 /* =====================================
    RESPONSIVE NAVIGATION (desktop default)
 ===================================== */
@@ -690,4 +808,35 @@ footer hr{
         line-height:1.8;
         margin:0;
     }
+
+    /* Login / Admin */
+    .login-box{
+        margin:30px auto;
+        padding:35px 24px;
+        border-radius:14px;
+        max-width:92%;
+    }
+
+    .login-box h2{
+        font-size:24px;
+    }
+
+    .login-box input{
+        font-size:16px;
+        padding:13px 14px;
+    }
+
+    .login-button,
+    .logged-in-box .button{
+        padding:14px;
+        font-size:15px;
+    }
+}
+
+@media screen and (max-width:380px){
+
+    .login-box{
+        padding:28px 18px;
+    }
+
 }
