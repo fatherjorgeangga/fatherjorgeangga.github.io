@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Seed Church Fathers (one-time use)</title>
+</head>
+<body>
+
+<h2>Seeding Church Fathers into Firestore...</h2>
+<p>Open this page ONCE while logged in as an admin. Check the browser console (F12) for progress. Delete this file afterward.</p>
+<div id="log" style="font-family:monospace; white-space:pre-wrap;"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCjaYeBaaQMBH43eR0XIVyAlopxS6Ku3u0",
+  authDomain: "saintmichaeltibuloy.firebaseapp.com",
+  projectId: "saintmichaeltibuloy",
+  storageBucket: "saintmichaeltibuloy.firebasestorage.app",
+  messagingSenderId: "192594665363",
+  appId: "1:192594665363:web:b030585199d7beb5cd5266"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const log = document.getElementById("log");
+function print(msg) {
+  log.textContent += msg + "\n";
+  console.log(msg);
+}
+
+const fathers = [
+  {
+    name: "St. Augustine",
+    title: "Bishop of Hippo",
+    years: "354–430 AD",
+    region: "North Africa",
+    feastDay: "August 28",
+    majorWorks: "Confessions, City of God, On the Trinity",
+    bio: "One of the greatest Doctors of the Church whose writings shaped Western Christianity for centuries.",
+    coverImage: "images/fathers/augustine.jpg"
+  },
+  {
+    name: "St. Athanasius",
+    title: "Bishop of Alexandria",
+    years: "296–373 AD",
+    region: "Egypt",
+    feastDay: "May 2",
+    majorWorks: "On the Incarnation, Life of St. Anthony",
+    bio: "Defender of the Divinity of Christ and one of the greatest opponents of the Arian heresy.",
+    coverImage: "images/fathers/athanasius.jpeg"
+  },
+  {
+    name: "St. John Chrysostom",
+    title: "Archbishop of Constantinople",
+    years: "347–407 AD",
+    region: "Antioch",
+    feastDay: "September 13",
+    majorWorks: "Homilies on Matthew, Homilies on John, Divine Liturgy",
+    bio: "Known as the \"Golden-Mouthed\" preacher for his eloquent sermons and biblical commentaries.",
+    coverImage: "images/fathers/chrysostom.jpg"
+  },
+  {
+    name: "St. Jerome",
+    title: "Priest & Doctor of the Church",
+    years: "347–420 AD",
+    region: "Dalmatia / Bethlehem",
+    feastDay: "September 30",
+    majorWorks: "Latin Vulgate Bible, Against Jovinian, Letters",
+    bio: "Translator of the Latin Vulgate and one of the greatest biblical scholars in Church history.",
+    coverImage: "images/fathers/jerome.jpeg"
+  },
+  {
+    name: "St. Ambrose",
+    title: "Bishop of Milan",
+    years: "339–397 AD",
+    region: "Italy",
+    feastDay: "December 7",
+    majorWorks: "On the Mysteries, On the Duties of the Clergy, Hexaemeron",
+    bio: "Mentor of St. Augustine and one of the four original Latin Doctors of the Church.",
+    coverImage: "images/fathers/ambrose.jpeg"
+  },
+  {
+    name: "St. Gregory the Great",
+    title: "Pope Gregory I",
+    years: "540–604 AD",
+    region: "Rome",
+    feastDay: "September 3",
+    majorWorks: "Pastoral Rule, Dialogues, Moralia in Job",
+    bio: "One of the four great Latin Doctors and among the most influential Popes in Church history.",
+    coverImage: "images/fathers/gregory.jfif"
+  },
+  {
+    name: "St. Basil the Great",
+    title: "Archbishop of Caesarea",
+    years: "330–379 AD",
+    region: "Cappadocia",
+    feastDay: "January 2",
+    majorWorks: "On the Holy Spirit, Hexaemeron, Ascetical Works",
+    bio: "One of the Cappadocian Fathers and a principal defender of the doctrine of the Holy Trinity.",
+    coverImage: "images/fathers/basil.jfif"
+  },
+  {
+    name: "St. Gregory Nazianzen",
+    title: "Archbishop of Constantinople",
+    years: "329–390 AD",
+    region: "Cappadocia",
+    feastDay: "January 2",
+    majorWorks: "Theological Orations, Letters, Poems",
+    bio: "Known as \"The Theologian\" for his profound teaching on the Holy Trinity.",
+    coverImage: "images/fathers/gregorynazianzen.jpg"
+  }
+];
+
+onAuthStateChanged(auth, async function (user) {
+  if (!user) {
+    print("❌ You are not logged in as admin. Log in via login.html first, then reopen this page.");
+    return;
+  }
+
+  print("✅ Logged in as " + user.email);
+
+  const existing = await getDocs(collection(db, "fathers"));
+  if (!existing.empty) {
+    print("⚠️ The 'fathers' collection already has " + existing.size + " document(s).");
+    print("To avoid duplicates, this script will NOT run automatically.");
+    print("If you're sure you want to add these 8 anyway, edit this file and remove the 'return;' below.");
+    return;
+  }
+
+  print("Adding " + fathers.length + " Church Fathers...");
+
+  for (const father of fathers) {
+    try {
+      await addDoc(collection(db, "fathers"), father);
+      print("✅ Added: " + father.name);
+    } catch (err) {
+      print("❌ Failed to add " + father.name + ": " + err.message);
+    }
+  }
+
+  print("\nDone! Go check fathers.html — then delete this seed-fathers.html file, it's no longer needed.");
+});
+</script>
+
+</body>
+</html>
