@@ -160,6 +160,62 @@ Log Out
 
 </div>
 
+<!-- ===========================
+     BOOKS MANAGER
+=========================== -->
+
+<div class="card">
+
+<h2>📚 Manage Books</h2>
+
+<form id="bookForm">
+
+<label for="bookTitle">Title</label>
+
+<input type="text" id="bookTitle" placeholder="e.g. The Glories of Mary" required>
+
+<label for="bookAuthor">Author</label>
+
+<input type="text" id="bookAuthor" placeholder="e.g. St. Alphonsus Liguori">
+
+<label for="bookCategory">Category</label>
+
+<input type="text" id="bookCategory" placeholder="e.g. Marian, Theology, Prayer Book">
+
+<label for="bookDescription">Short Description</label>
+
+<input type="text" id="bookDescription" placeholder="e.g. A classic work on Marian devotion.">
+
+<label for="bookCoverImage">Cover Image URL (optional)</label>
+
+<input type="text" id="bookCoverImage" placeholder="e.g. images/covers/mybook.jpg">
+
+<label for="bookPdfLink">PDF Link (optional — leave blank for "Coming Soon")</label>
+
+<input type="text" id="bookPdfLink" placeholder="e.g. books/mybook.pdf">
+
+<div id="bookError" class="error-message"></div>
+
+<button type="submit" class="button login-button" id="bookSubmitButton">Add Book</button>
+
+<button type="button" class="button logout-button" id="bookCancelButton" style="display:none; width:100%; margin-top:10px; border:none; cursor:pointer;">Cancel Edit</button>
+
+</form>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Current Books</h2>
+
+<div id="bookList">
+
+<p style="text-align:center; color:#888;">Loading books...</p>
+
+</div>
+
+</div>
+
 </div>
 
 <footer>
