@@ -1,250 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title> Books </title>
     
 <link rel="icon" href="logo2.ico" type="image/x-icon">
     
 <link rel="stylesheet" href="css/style.css">
-
 </head>
-
 <body>
-
 <header>
-
 <a href="index.html">
-
 <img src="images/newlogo.png"
 width="140"
 alt="Saint Michael Archives Logo">
-
 </a>
-
 <h1>Office Of Exorcism</h1>
   
 <h2>St. Michael the Archangel Parish</h2>
 <p>
-
 Quis ut Deus?
-
 <br><br>
-
 Traditional Roman Catholic
-
 <br>
   
 Spiritual & Healing Ministry
-
 <br><br>
-
 Preserving Sacred Scripture,
 Sacred Tradition,
 Catholic Books,
 and Historical Church Documents.
-
 </p>
-
 </header>
-
 <nav>
-
 <button class="menu-toggle">
-
 ☰ Menu
-
 </button>
-
 <div class="nav-links">
-
 <a href="mass.html">🗓️ Mass Schedule</a>
-
 <a href="index.html">🏠 Home</a>
-
 <a href="books.html">📚 Books</a>
-
 <a href="search.html">🔎 Search</a>
-
 <a href="saints.html">⛪ Saints</a>
-
 <a href="fathers.html">👨‍🏫 Church Fathers</a>
-
 <a href="councils.html">📜 Councils</a>
-
 <a href="about.html">ℹ About</a>
-
 </div>
-
 </nav>
-
 <div class="breadcrumb">
-
 <a href="index.html">🏠 Home</a>
-
 <span>&gt;</span>
-
 📚 Books
-
 </div>
     
-
 <div class="container">
-
 <h2>📚 Library Collection</h2>
-
 <input
 type="text"
 id="searchBox"
 placeholder="Search books...">
 
 <!-- Featured Book Starts Here -->
-
 <section class="featured-book">
-
 <div class="featured-image">
-
 <img src="images/covers/glories-of-mary.jpg"
      alt="The Glories of Mary">
-
 </div>
-
 <div class="featured-info">
-
 <h2>⭐ Featured Book</h2>
-
 <h3>The Glories of Mary</h3>
-
 <p>
-
 One of the greatest Catholic works ever written on the Blessed Virgin Mary,
 by St. Alphonsus Liguori.
-
 This classic explains Marian doctrine,
 devotion,
 miracles,
 and the role of Our Lady in salvation history.
-
 </p>
-
 <p>
-
 <b>Author:</b> St. Alphonsus Liguori
-
 <br>
-
 <b>Published:</b> 1750
-
 <br>
-
 <b>Language:</b> English
-
 </p>
-
 <a href="books/TheGloriesOfMary1852.pdf"
 class="button">
-
 📖 Read Book
-
 </a>
+</div>
+</section>
+<!-- Featured Book Ends Here -->
+
+<!-- ===========================================
+     SECTION 1 — FATHER JORGE PUBLICATIONS
+     Main purpose of this page.
+=========================================== -->
+
+<h2 style="text-align:center; margin-top:60px;">✝ Fr. Jorge Publications</h2>
+
+<p class="subtitle">
+
+Books, catechesis, and pastoral writings by Fr. Jorge Angga.
+
+</p>
+
+<div class="book-grid" id="bookGrid-fatherjorge">
+
+<p style="text-align:center; color:#888; grid-column:1/-1;">Loading...</p>
 
 </div>
 
-</section>
+<!-- ===========================================
+     SECTION 2 — CATECHISM / BALTIMORE
+=========================================== -->
 
-<!-- Featured Book Ends Here -->
+<h2 style="text-align:center; margin-top:60px;">📘 Catechism / Baltimore</h2>
 
-<div class="book-grid" id="bookGrid">
+<p class="subtitle">
 
-<p style="text-align:center; color:#888; grid-column:1/-1;">Loading books...</p>
+Catechetical resources, including the Baltimore Catechism, for
+teaching and studying the Catholic Faith.
+
+</p>
+
+<div class="book-grid" id="bookGrid-catechism">
+
+<p style="text-align:center; color:#888; grid-column:1/-1;">Loading...</p>
+
+</div>
+
+<!-- ===========================================
+     SECTION 3 — CATHOLIC BOOKS
+=========================================== -->
+
+<h2 style="text-align:center; margin-top:60px;">📚 Catholic Books</h2>
+
+<p class="subtitle">
+
+Classic and traditional Catholic books, spiritual writings, and
+theological works.
+
+</p>
+
+<div class="book-grid" id="bookGrid-catholic">
+
+<p style="text-align:center; color:#888; grid-column:1/-1;">Loading...</p>
 
 </div>
 
 </div>
 
 <footer>
-
 <div class="footer-container">
-
 <div class="footer-column">
-
 <h3>🏛 Saint Michael Archives</h3>
-
 <p>
-
 Preserving Sacred Scripture,
 Sacred Tradition,
 Catholic Books,
 Church Fathers,
 Saints,
 and Church Documents.
-
 </p>
-
 </div>
-
 <div class="footer-column">
-
 <h3>📚 Quick Links</h3>
-
 <a href="mass.html">Mass Schedule</a><br>
-
 <a href="index.html">Home</a><br>
-
 <a href="books.html">Books</a><br>
-
 <a href="saints.html">Saints</a><br>
-
 <a href="fathers.html">Church Fathers</a><br>
-
 <a href="councils.html">Councils</a><br>
-
 <a href="about.html">About</a>
-
 </div>
-
 <div class="footer-column">
-
 <h3>✝ Motto</h3>
-
 <p>
-
 <b>Quis ut Deus?</b>
-
 <br><br>
-
 "Who is like unto God?"
-
 </p>
-
 </div>
-
 </div>
-
 <hr>
-
 <p class="copyright">
-
 © 2026 Saint Michael Archives
-
 <br>
-
 Designed and maintained by
 Saint Michael the Archangel Parish
-
 </p>
-
 </footer>
-
 <script src="script.js"></script>
-
 <script type="module" src="books.js"></script>
-
 </body>
-
 </html>
