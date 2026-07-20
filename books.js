@@ -22,106 +22,90 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ===========================================
-// Display the saints grid (read-only, public)
+// Display the book grid (read-only, public)
 // ===========================================
 
-const saintGrid = document.getElementById("saintGrid");
+const bookGrid = document.getElementById("bookGrid");
 
-onSnapshot(collection(db, "saints"), function (snapshot) {
-  if (snapshot.empty) {
-    saintGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No saints added yet. Please check back soon.</p>';
-    return;
-  }
+// Safety guard: if this page doesn't have a #bookGrid element,
+// stop here instead of crashing when Firestore responds.
+if (bookGrid) {
 
-  const entries = [];
-  snapshot.forEach(function (docSnap) {
-    entries.push(docSnap.data());
+  onSnapshot(collection(db, "books"), function (snapshot) {
+    if (snapshot.empty) {
+      bookGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No additional books have been added yet.</p>';
+      return;
+    }
+
+    const entries = [];
+    snapshot.forEach(function (docSnap) {
+      entries.push(docSnap.data());
+    });
+
+    entries.sort(function (a, b) {
+      return a.title.localeCompare(b.title);
+    });
+
+    bookGrid.innerHTML = "";
+
+    entries.forEach(function (entry) {
+      const card = document.createElement("div");
+      card.className = "book-card searchable";
+
+      const cover = document.createElement("div");
+      cover.className = "book-cover";
+
+      if (entry.coverImage) {
+        const img = document.createElement("img");
+        img.src = entry.coverImage;
+        img.alt = entry.title;
+        img.className = "book-image";
+        cover.appendChild(img);
+      } else {
+        cover.textContent = "📖";
+      }
+
+      const content = document.createElement("div");
+      content.className = "book-content";
+
+      const titleEl = document.createElement("h3");
+      titleEl.textContent = entry.title;
+      content.appendChild(titleEl);
+
+      if (entry.author) {
+        const authorEl = document.createElement("p");
+        authorEl.innerHTML = "<strong>Author:</strong> " + entry.author;
+        content.appendChild(authorEl);
+      }
+
+      if (entry.category) {
+        const categoryEl = document.createElement("p");
+        categoryEl.innerHTML = "<strong>Category:</strong> " + entry.category;
+        content.appendChild(categoryEl);
+      }
+
+      if (entry.description) {
+        const descEl = document.createElement("p");
+        descEl.textContent = entry.description;
+        content.appendChild(descEl);
+      }
+
+      const linkEl = document.createElement("a");
+      linkEl.className = "book-button";
+      if (entry.pdfLink) {
+        linkEl.href = entry.pdfLink;
+        linkEl.target = "_blank";
+        linkEl.textContent = "Read PDF";
+      } else {
+        linkEl.href = "#";
+        linkEl.textContent = "Coming Soon";
+      }
+      content.appendChild(linkEl);
+
+      card.appendChild(cover);
+      card.appendChild(content);
+      bookGrid.appendChild(card);
+    });
   });
 
-  entries.sort(function (a, b) {
-    return a.name.localeCompare(b.name);
-  });
-
-  saintGrid.innerHTML = "";
-
-  entries.forEach(function (entry) {
-    const card = document.createElement("div");
-    card.className = "book-card searchable";
-
-    const cover = document.createElement("div");
-    cover.className = "book-cover";
-
-    if (entry.coverImage) {
-      const img = document.createElement("img");
-      img.src = entry.coverImage;
-      img.alt = entry.name;
-      img.className = "book-image top";
-      cover.appendChild(img);
-    } else {
-      cover.textContent = "⛪";
-    }
-
-    const content = document.createElement("div");
-    content.className = "book-content";
-
-    const nameEl = document.createElement("h3");
-    nameEl.textContent = entry.name;
-    content.appendChild(nameEl);
-
-    if (entry.years) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Years:</strong> " + entry.years;
-      content.appendChild(p);
-    }
-
-    if (entry.title) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Title:</strong> " + entry.title;
-      content.appendChild(p);
-    }
-
-    if (entry.feastDay) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Feast Day:</strong> " + entry.feastDay;
-      content.appendChild(p);
-    }
-
-    if (entry.patronage) {
-      const p = document.createElement("p");
-      p.innerHTML = "<strong>Patronage:</strong> " + entry.patronage;
-      content.appendChild(p);
-    }
-
-    if (entry.majorWorks) {
-      const label = document.createElement("p");
-      label.innerHTML = "<strong>Major Works:</strong>";
-      content.appendChild(label);
-
-      const ul = document.createElement("ul");
-      entry.majorWorks.split(",").forEach(function (work) {
-        const trimmed = work.trim();
-        if (!trimmed) return;
-        const li = document.createElement("li");
-        li.textContent = trimmed;
-        ul.appendChild(li);
-      });
-      content.appendChild(ul);
-    }
-
-    if (entry.bio) {
-      const p = document.createElement("p");
-      p.textContent = entry.bio;
-      content.appendChild(p);
-    }
-
-    const btn = document.createElement("a");
-    btn.className = "book-button";
-    btn.href = "#";
-    btn.textContent = "Biography";
-    content.appendChild(btn);
-
-    card.appendChild(cover);
-    card.appendChild(content);
-    saintGrid.appendChild(card);
-  });
-});
+}
