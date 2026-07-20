@@ -22,90 +22,98 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ===========================================
-// Display the book grid (read-only, public)
+// The 3 category sections. "key" must exactly
+// match the value saved from admin.html's
+// bookCategory dropdown.
 // ===========================================
 
-const bookGrid = document.getElementById("bookGrid");
+const sections = [
+  { key: "Fr. Jorge Publications", gridId: "bookGrid-fatherjorge" },
+  { key: "Catechism / Baltimore",  gridId: "bookGrid-catechism" },
+  { key: "Catholic Books",         gridId: "bookGrid-catholic" }
+];
 
-// Safety guard: if this page doesn't have a #bookGrid element,
-// stop here instead of crashing when Firestore responds.
-if (bookGrid) {
+function buildCard(entry) {
+  const card = document.createElement("div");
+  card.className = "book-card searchable";
 
-  onSnapshot(collection(db, "books"), function (snapshot) {
-    if (snapshot.empty) {
-      bookGrid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No additional books have been added yet.</p>';
+  const cover = document.createElement("div");
+  cover.className = "book-cover";
+
+  if (entry.coverImage) {
+    const img = document.createElement("img");
+    img.src = entry.coverImage;
+    img.alt = entry.title;
+    img.className = "book-image";
+    cover.appendChild(img);
+  } else {
+    cover.textContent = "📖";
+  }
+
+  const content = document.createElement("div");
+  content.className = "book-content";
+
+  const titleEl = document.createElement("h3");
+  titleEl.textContent = entry.title;
+  content.appendChild(titleEl);
+
+  if (entry.author) {
+    const authorEl = document.createElement("p");
+    authorEl.innerHTML = "<strong>Author:</strong> " + entry.author;
+    content.appendChild(authorEl);
+  }
+
+  if (entry.description) {
+    const descEl = document.createElement("p");
+    descEl.textContent = entry.description;
+    content.appendChild(descEl);
+  }
+
+  const linkEl = document.createElement("a");
+  linkEl.className = "book-button";
+  if (entry.pdfLink) {
+    linkEl.href = entry.pdfLink;
+    linkEl.target = "_blank";
+    linkEl.textContent = "Read PDF";
+  } else {
+    linkEl.href = "#";
+    linkEl.textContent = "Coming Soon";
+  }
+  content.appendChild(linkEl);
+
+  card.appendChild(cover);
+  card.appendChild(content);
+  return card;
+}
+
+onSnapshot(collection(db, "books"), function (snapshot) {
+
+  const entries = [];
+  snapshot.forEach(function (docSnap) {
+    entries.push(docSnap.data());
+  });
+
+  entries.sort(function (a, b) {
+    return (a.title || "").localeCompare(b.title || "");
+  });
+
+  sections.forEach(function (section) {
+    const gridEl = document.getElementById(section.gridId);
+    if (!gridEl) return;
+
+    const matches = entries.filter(function (entry) {
+      return entry.category === section.key;
+    });
+
+    if (matches.length === 0) {
+      gridEl.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1;">No books added yet in this section.</p>';
       return;
     }
 
-    const entries = [];
-    snapshot.forEach(function (docSnap) {
-      entries.push(docSnap.data());
-    });
-
-    entries.sort(function (a, b) {
-      return a.title.localeCompare(b.title);
-    });
-
-    bookGrid.innerHTML = "";
-
-    entries.forEach(function (entry) {
-      const card = document.createElement("div");
-      card.className = "book-card searchable";
-
-      const cover = document.createElement("div");
-      cover.className = "book-cover";
-
-      if (entry.coverImage) {
-        const img = document.createElement("img");
-        img.src = entry.coverImage;
-        img.alt = entry.title;
-        img.className = "book-image";
-        cover.appendChild(img);
-      } else {
-        cover.textContent = "📖";
-      }
-
-      const content = document.createElement("div");
-      content.className = "book-content";
-
-      const titleEl = document.createElement("h3");
-      titleEl.textContent = entry.title;
-      content.appendChild(titleEl);
-
-      if (entry.author) {
-        const authorEl = document.createElement("p");
-        authorEl.innerHTML = "<strong>Author:</strong> " + entry.author;
-        content.appendChild(authorEl);
-      }
-
-      if (entry.category) {
-        const categoryEl = document.createElement("p");
-        categoryEl.innerHTML = "<strong>Category:</strong> " + entry.category;
-        content.appendChild(categoryEl);
-      }
-
-      if (entry.description) {
-        const descEl = document.createElement("p");
-        descEl.textContent = entry.description;
-        content.appendChild(descEl);
-      }
-
-      const linkEl = document.createElement("a");
-      linkEl.className = "book-button";
-      if (entry.pdfLink) {
-        linkEl.href = entry.pdfLink;
-        linkEl.target = "_blank";
-        linkEl.textContent = "Read PDF";
-      } else {
-        linkEl.href = "#";
-        linkEl.textContent = "Coming Soon";
-      }
-      content.appendChild(linkEl);
-
-      card.appendChild(cover);
-      card.appendChild(content);
-      bookGrid.appendChild(card);
+    gridEl.innerHTML = "";
+    matches.forEach(function (entry) {
+      gridEl.appendChild(buildCard(entry));
     });
   });
 
-}
+});
