@@ -1228,3 +1228,117 @@ footer hr{
         padding:20px;
     }
 }
+
+/* ===============================================
+   BIOGRAPHY MODAL
+   Triggered by clicking any .book-button — shows
+   the full portrait + details in a clean popup
+   instead of a dead "#" link.
+=============================================== */
+
+.bio-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,20,30,.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:99999;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+}
+
+.bio-overlay.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.bio-modal{
+    background:#fff;
+    border-radius:18px;
+    max-width:640px;
+    width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    animation:bioPop .22s ease;
+}
+
+@keyframes bioPop{
+    from{ transform:scale(.94); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+}
+
+.bio-close{
+    position:sticky;
+    top:14px;
+    left:100%;
+    transform:translateX(-14px);
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:none;
+    background:#0f2340;
+    color:#fff;
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2;
+}
+
+.bio-close:hover{
+    background:#b00020;
+}
+
+.bio-modal-body{
+    margin-top:-34px;
+}
+
+.bio-modal-image{
+    width:100%;
+    max-height:320px;
+    object-fit:cover;
+    object-position:top;
+    display:block;
+}
+
+.bio-modal-text{
+    padding:30px 32px 34px;
+}
+
+.bio-modal-text h3{
+    margin-top:0;
+    color:#0f2340;
+    font-size:26px;
+}
+
+.bio-modal-text p{
+    line-height:1.8;
+    color:#333;
+}
+
+.bio-modal-text ul{
+    line-height:1.9;
+}
+
+@media(max-width:600px){
+    .bio-modal-text{
+        padding:24px 20px 28px;
+    }
+
+    .bio-modal-text h3{
+        font-size:22px;
+    }
+}
+
+/* Broken image fallback icon (paired with script.js) */
+.book-cover.img-fallback{
+    color:#b8b8b8;
+    background:#eee;
+}
