@@ -6,17 +6,15 @@
 //
 // {
 //   "Genesis": {
-//     "1": ["In the beginning...", "And the earth was void..."],
-//     "2": ["..."]
+//     "1": { "1": "verse text", "2": "verse text", ... },
+//     "2": { "1": "...", ... }
 //   },
 //   "Exodus": { ... },
 //   ...
 // }
 //
-// i.e. book name -> chapter number (as a string) -> array
-// of verse strings, in order. If your downloaded data file
-// uses a different shape, tell Claude the structure and the
-// loader below can be adjusted quickly.
+// i.e. book name -> chapter number -> object keyed by
+// verse number -> verse text.
 // ===========================================
 
 const bookSelect = document.getElementById("bibleBook");
@@ -91,13 +89,15 @@ if (bookSelect) {
     chapterTitleEl.textContent = book + " " + chapter;
     versesEl.innerHTML = "";
 
-    verses.forEach(function (text, i) {
-      const verseNum = i + 1;
-      const p = document.createElement("p");
-      p.className = "bible-verse";
-      p.innerHTML = "<span class='verse-num'>" + verseNum + "</span> " + text;
-      versesEl.appendChild(p);
-    });
+    Object.keys(verses)
+      .sort(function (a, b) { return parseInt(a, 10) - parseInt(b, 10); })
+      .forEach(function (verseNum) {
+        const text = verses[verseNum].replace(/\*/g, "");
+        const p = document.createElement("p");
+        p.className = "bible-verse";
+        p.innerHTML = "<span class='verse-num'>" + verseNum + "</span> " + text;
+        versesEl.appendChild(p);
+      });
 
     savePosition(book, chapter);
     window.scrollTo({ top: readerEl.offsetTop - 100, behavior: "smooth" });
@@ -179,15 +179,15 @@ if (bookSelect) {
 
     const bookTyped = match[1];
     const chapterNum = match[2];
-    const verseNum = parseInt(match[3], 10);
+    const verseNum = match[3];
 
     const book = findBookName(bookTyped);
     if (!book || !bibleData[book] || !bibleData[book][chapterNum]) return null;
 
-    const verses = bibleData[book][chapterNum];
-    if (verseNum < 1 || verseNum > verses.length) return null;
+    const verseText = bibleData[book][chapterNum][verseNum];
+    if (!verseText) return null;
 
-    return { book: book, chapter: chapterNum, verseNum: verseNum, text: verses[verseNum - 1] };
+    return { book: book, chapter: chapterNum, verseNum: verseNum, text: verseText.replace(/\*/g, "") };
   }
 
   function keywordSearch(query) {
@@ -198,12 +198,13 @@ if (bookSelect) {
       const chapters = bibleData[book];
       for (const chapterNum in chapters) {
         const verses = chapters[chapterNum];
-        verses.forEach(function (text, i) {
+        for (const verseNum in verses) {
+          const text = verses[verseNum];
           if (text.toLowerCase().includes(lowerQuery)) {
-            results.push({ book: book, chapter: chapterNum, verseNum: i + 1, text: text });
+            results.push({ book: book, chapter: chapterNum, verseNum: verseNum, text: text.replace(/\*/g, "") });
+            if (results.length >= 200) return results; // safety cap for very common words
           }
-        });
-        if (results.length >= 200) return results; // safety cap for very common words
+        }
       }
     }
     return results;
