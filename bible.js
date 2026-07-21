@@ -151,4 +151,149 @@ if (bookSelect) {
   prevBtn.addEventListener("click", function () { goToChapter(-1); });
   nextBtn.addEventListener("click", function () { goToChapter(1); });
 
+  // ===========================================
+  // Search — supports two modes, same as drbo.org:
+  //   1. Reference lookup: "John 3:16", "Genesis 1:1"
+  //   2. Keyword search: "charity", "shepherd"
+  // ===========================================
+
+  const searchInput = document.getElementById("bibleSearch");
+  const searchClearBtn = document.getElementById("bibleSearchClear");
+  const searchResultsEl = document.getElementById("bibleSearchResults");
+
+  function findBookName(typed) {
+    const lower = typed.toLowerCase().trim();
+    return bookNames.find(function (name) {
+      return name.toLowerCase() === lower;
+    }) || bookNames.find(function (name) {
+      return name.toLowerCase().startsWith(lower);
+    });
+  }
+
+  // Matches "John 3:16", "Genesis 1:1", "1 John 4:8", "Song of Songs 2:1" etc.
+  const REFERENCE_PATTERN = /^(.+?)\s+(\d+)\s*:\s*(\d+)$/;
+
+  function tryReferenceLookup(query) {
+    const match = query.match(REFERENCE_PATTERN);
+    if (!match) return null;
+
+    const bookTyped = match[1];
+    const chapterNum = match[2];
+    const verseNum = parseInt(match[3], 10);
+
+    const book = findBookName(bookTyped);
+    if (!book || !bibleData[book] || !bibleData[book][chapterNum]) return null;
+
+    const verses = bibleData[book][chapterNum];
+    if (verseNum < 1 || verseNum > verses.length) return null;
+
+    return { book: book, chapter: chapterNum, verseNum: verseNum, text: verses[verseNum - 1] };
+  }
+
+  function keywordSearch(query) {
+    const lowerQuery = query.toLowerCase();
+    const results = [];
+
+    for (const book of bookNames) {
+      const chapters = bibleData[book];
+      for (const chapterNum in chapters) {
+        const verses = chapters[chapterNum];
+        verses.forEach(function (text, i) {
+          if (text.toLowerCase().includes(lowerQuery)) {
+            results.push({ book: book, chapter: chapterNum, verseNum: i + 1, text: text });
+          }
+        });
+        if (results.length >= 200) return results; // safety cap for very common words
+      }
+    }
+    return results;
+  }
+
+  function renderSearchResults(query) {
+    if (!query) {
+      searchResultsEl.innerHTML = "";
+      searchResultsEl.classList.remove("show");
+      searchClearBtn.style.display = "none";
+      readerEl.style.display = "block";
+      return;
+    }
+
+    searchClearBtn.style.display = "block";
+
+    const refResult = tryReferenceLookup(query);
+
+    if (refResult) {
+      readerEl.style.display = "none";
+      searchResultsEl.classList.add("show");
+      searchResultsEl.innerHTML = "";
+
+      const card = document.createElement("div");
+      card.className = "bible-search-item bible-search-item-single";
+      card.innerHTML =
+        "<h4>" + refResult.book + " " + refResult.chapter + ":" + refResult.verseNum + "</h4>" +
+        "<p><span class='verse-num'>" + refResult.verseNum + "</span> " + refResult.text + "</p>";
+      card.addEventListener("click", function () {
+        jumpTo(refResult.book, refResult.chapter);
+      });
+      searchResultsEl.appendChild(card);
+      return;
+    }
+
+    const matches = keywordSearch(query);
+    readerEl.style.display = "none";
+    searchResultsEl.classList.add("show");
+    searchResultsEl.innerHTML = "";
+
+    if (matches.length === 0) {
+      searchResultsEl.innerHTML = '<p class="bible-search-empty">No verses found for "' + query + '". Try a verse reference like "John 3:16" or a different keyword.</p>';
+      return;
+    }
+
+    const countEl = document.createElement("p");
+    countEl.className = "bible-search-count";
+    countEl.textContent = matches.length + (matches.length >= 200 ? "+" : "") + " verse" + (matches.length === 1 ? "" : "s") + " found";
+    searchResultsEl.appendChild(countEl);
+
+    matches.forEach(function (m) {
+      const card = document.createElement("div");
+      card.className = "bible-search-item";
+      card.innerHTML =
+        "<h4>" + m.book + " " + m.chapter + ":" + m.verseNum + "</h4>" +
+        "<p><span class='verse-num'>" + m.verseNum + "</span> " + m.text + "</p>";
+      card.addEventListener("click", function () {
+        jumpTo(m.book, m.chapter);
+      });
+      searchResultsEl.appendChild(card);
+    });
+  }
+
+  function jumpTo(book, chapter) {
+    bookSelect.value = book;
+    populateChapters(book);
+    chapterSelect.value = chapter;
+    searchInput.value = "";
+    searchResultsEl.classList.remove("show");
+    searchResultsEl.innerHTML = "";
+    searchClearBtn.style.display = "none";
+    readerEl.style.display = "block";
+    renderChapter();
+  }
+
+  if (searchInput) {
+    let debounceTimer = null;
+    searchInput.addEventListener("keyup", function () {
+      clearTimeout(debounceTimer);
+      const query = searchInput.value.trim();
+      debounceTimer = setTimeout(function () {
+        renderSearchResults(query);
+      }, 200);
+    });
+
+    searchClearBtn.addEventListener("click", function () {
+      searchInput.value = "";
+      renderSearchResults("");
+      searchInput.focus();
+    });
+  }
+
 }
