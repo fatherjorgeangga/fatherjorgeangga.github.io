@@ -11,7 +11,7 @@
 
 <link rel="icon" href="/logo2.ico">
 
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/style.css?v=2">
 
 </head>
 
@@ -75,16 +75,37 @@ alt="Saint Michael Archives Logo">
 
 </div>
 
-<div class="container">
+<div class="search-shell">
 
-<h2>🔎 Search the Archive</h2>
+<h2 class="search-shell-title">🔎 Search the Archive</h2>
+
+<p class="search-shell-subtitle">
+
+Search across Books, Saints, Church Fathers, and Councils.
+
+</p>
+
+<div class="search-box-wrap">
 
 <input
 type="text"
 id="globalSearch"
+autocomplete="off"
 placeholder="Search books, saints, councils, Church Fathers...">
 
-<p id="searchStatus" class="subtitle" style="margin-top:15px; text-align:center;"></p>
+<div id="searchSuggestions" class="search-suggestions"></div>
+
+</div>
+
+<div id="recentSearchesWrap" class="recent-searches-wrap">
+
+<span class="recent-searches-label">Recent:</span>
+
+<div id="recentSearches" class="recent-searches"></div>
+
+</div>
+
+<p id="searchStatus" class="search-status"></p>
 
 <div id="searchResults" class="search-results"></div>
 
@@ -161,7 +182,7 @@ and Church Documents.
 
 <script src="/script.js"></script>
 
-<script type="module" src="/search.js"></script>
+<script type="module" src="/search.js?v=2"></script>
 
 </body>
 
