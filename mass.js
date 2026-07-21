@@ -43,7 +43,6 @@ onSnapshot(collection(db, "massSchedules"), function (snapshot) {
     return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day) || a.time.localeCompare(b.time);
   });
 
-  // Group entries by day
   const grouped = {};
   entries.forEach(function (entry) {
     if (!grouped[entry.day]) grouped[entry.day] = [];
