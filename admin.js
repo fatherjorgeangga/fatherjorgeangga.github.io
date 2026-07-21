@@ -61,14 +61,14 @@ onAuthStateChanged(auth, function (user) {
     adminContent.style.display = "block";
     userEmailDisplay.textContent = getDisplayName(user.email);
   } else {
-    window.location.href = "login.html";
+    window.location.href = "/login/";
   }
 });
 
 if (logoutButton) {
   logoutButton.addEventListener("click", function () {
     signOut(auth).then(function () {
-      window.location.href = "login.html";
+      window.location.href = "/login/";
     });
   });
 }
