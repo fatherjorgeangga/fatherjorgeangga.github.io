@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Automatically highlight the current page's nav link
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const currentPath = (window.location.pathname.replace(/index\.html$/, '').replace(/\/+$/, '')) || '/';
   document.querySelectorAll('.nav-links a').forEach(function (link) {
-    const linkPage = link.getAttribute('href');
-    link.classList.toggle('active', linkPage === currentPage);
+    const linkPath = (link.getAttribute('href').replace(/\/+$/, '')) || '/';
+    link.classList.toggle('active', linkPath === currentPath);
   });
 
   // Book / Church Father search filter (works for both #searchBox and #globalSearch)
@@ -110,10 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Auto-count entries from other pages (only runs on index.html)
   const countTargets = [
-    { file: 'fathers.html', elementId: 'count-fathers' },
-    { file: 'councils.html', elementId: 'count-councils' },
-    { file: 'saints.html', elementId: 'count-saints' },
-    { file: 'books.html', elementId: 'count-books' }
+    { file: '/fathers/', elementId: 'count-fathers' },
+    { file: '/councils/', elementId: 'count-councils' },
+    { file: '/saints/', elementId: 'count-saints' },
+    { file: '/books/', elementId: 'count-books' }
   ];
 
   countTargets.forEach(function (target) {
