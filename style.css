@@ -1775,3 +1775,24 @@ footer hr{
     height:auto;
     margin:0 auto 10px;
 }
+
+/* Search-result highlight — temporary glow on the
+   card a visitor jumped to from the search page */
+
+.search-highlight{
+    animation: searchHighlightPulse 2.6s ease-out;
+    position:relative;
+    z-index:1;
+}
+
+@keyframes searchHighlightPulse{
+    0%{
+        box-shadow: 0 0 0 4px rgba(212,175,55,.9), 0 6px 18px rgba(0,0,0,.12);
+    }
+    70%{
+        box-shadow: 0 0 0 4px rgba(212,175,55,.5), 0 6px 18px rgba(0,0,0,.12);
+    }
+    100%{
+        box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+}
