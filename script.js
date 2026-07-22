@@ -137,3 +137,53 @@ document.addEventListener('DOMContentLoaded', function () {
         // if fetch fails (e.g. running locally without a server), leave the number as-is
       });
   });
+
+// ===========================================
+// Highlight a specific card when arriving from
+// a search result — reads ?highlight=<title>
+// from the URL, scrolls to the matching card
+// (static or Firestore-rendered), and gives it
+// a temporary glowing highlight.
+// ===========================================
+
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const targetTitle = params.get('highlight');
+  if (!targetTitle) return;
+
+  const normalizedTarget = targetTitle.trim().toLowerCase();
+  let done = false;
+
+  function tryHighlight() {
+    if (done) return true;
+
+    const cards = document.querySelectorAll('.book-card, .card');
+    for (const card of cards) {
+      const heading = card.querySelector('h3, h2');
+      if (!heading) continue;
+
+      if (heading.textContent.trim().toLowerCase() === normalizedTarget) {
+        done = true;
+        card.classList.add('search-highlight');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function () {
+          card.classList.remove('search-highlight');
+        }, 2600);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Try right away (covers static cards already in the page)
+  if (tryHighlight()) return;
+
+  // Otherwise watch for Firestore-rendered cards being added,
+  // and give up after 6 seconds so we don't watch forever.
+  const observer = new MutationObserver(function () {
+    if (tryHighlight()) observer.disconnect();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  setTimeout(function () { observer.disconnect(); }, 6000);
+})();
