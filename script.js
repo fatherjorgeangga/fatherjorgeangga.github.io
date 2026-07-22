@@ -72,6 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const btn = e.target.closest('.book-button');
     if (!btn) return;
 
+    // Only intercept actual "Biography" buttons — Read PDF,
+    // Coming Soon, and any other book-button should behave
+    // as normal links.
+    if (btn.textContent.trim() !== 'Biography') return;
+
     const card = btn.closest('.book-card');
     if (!card) return;
 
