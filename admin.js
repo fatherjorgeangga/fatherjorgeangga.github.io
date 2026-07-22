@@ -15,6 +15,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  setDoc,
+  getDoc,
   onSnapshot,
   query
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
@@ -61,14 +63,14 @@ onAuthStateChanged(auth, function (user) {
     adminContent.style.display = "block";
     userEmailDisplay.textContent = getDisplayName(user.email);
   } else {
-    window.location.href = "/login/";
+    window.location.href = "login.html";
   }
 });
 
 if (logoutButton) {
   logoutButton.addEventListener("click", function () {
     signOut(auth).then(function () {
-      window.location.href = "/login/";
+      window.location.href = "login.html";
     });
   });
 }
@@ -582,3 +584,50 @@ onSnapshot(query(collection(db, "fathers")), function (snapshot) {
     fatherList.appendChild(row);
   });
 });
+
+// ===========================================
+// ABOUT PAGE MANAGER
+// ===========================================
+
+const aboutForm = document.getElementById("aboutForm");
+const aboutMissionInput = document.getElementById("aboutMissionInput");
+const aboutHistoryInput = document.getElementById("aboutHistoryInput");
+const aboutFaithInput = document.getElementById("aboutFaithInput");
+const aboutLocationInput = document.getElementById("aboutLocationInput");
+const aboutError = document.getElementById("aboutError");
+const aboutSavedNote = document.getElementById("aboutSavedNote");
+
+if (aboutForm) {
+  // Pre-fill the form with whatever is currently saved
+  getDoc(doc(db, "siteContent", "about")).then(function (docSnap) {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      aboutMissionInput.value = data.mission || "";
+      aboutHistoryInput.value = data.history || "";
+      aboutFaithInput.value = data.faith || "";
+      aboutLocationInput.value = data.location || "";
+    }
+  });
+
+  aboutForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    aboutError.textContent = "";
+    aboutSavedNote.style.display = "none";
+
+    const data = {
+      mission: aboutMissionInput.value.trim(),
+      history: aboutHistoryInput.value.trim(),
+      faith: aboutFaithInput.value.trim(),
+      location: aboutLocationInput.value.trim()
+    };
+
+    setDoc(doc(db, "siteContent", "about"), data)
+      .then(function () {
+        aboutSavedNote.style.display = "block";
+        setTimeout(function () { aboutSavedNote.style.display = "none"; }, 3000);
+      })
+      .catch(function (error) {
+        aboutError.textContent = "Error saving About page: " + error.message;
+      });
+  });
+}
