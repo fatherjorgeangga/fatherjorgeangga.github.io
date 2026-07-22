@@ -225,13 +225,17 @@ alt="Saint Michael Archives Logo">
 
 <input type="text" id="bookDescription" placeholder="e.g. A classic work on Marian devotion.">
 
-<label for="bookCoverImage">Cover Image URL (optional)</label>
+<label for="bookCoverImage">Cover Image (optional)</label>
 
-<input type="text" id="bookCoverImage" placeholder="e.g. images/covers/mybook.jpg">
+<input type="file" id="bookCoverImage" accept="image/*">
 
-<label for="bookPdfLink">PDF Link (optional — leave blank for "Coming Soon")</label>
+<p id="bookCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
-<input type="text" id="bookPdfLink" placeholder="e.g. books/mybook.pdf">
+<label for="bookPdfLink">PDF File (optional — leave blank for "Coming Soon")</label>
+
+<input type="file" id="bookPdfLink" accept="application/pdf">
+
+<p id="bookPdfCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
 <div id="bookError" class="admin-error"></div>
 
@@ -301,9 +305,11 @@ alt="Saint Michael Archives Logo">
 
 <input type="text" id="saintBio" placeholder="A short paragraph about this Saint">
 
-<label for="saintCoverImage">Portrait Image URL (optional)</label>
+<label for="saintCoverImage">Portrait Image (optional)</label>
 
-<input type="text" id="saintCoverImage" placeholder="e.g. images/saints/michael.jpg">
+<input type="file" id="saintCoverImage" accept="image/*">
+
+<p id="saintCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
 <div id="saintError" class="admin-error"></div>
 
@@ -373,9 +379,11 @@ alt="Saint Michael Archives Logo">
 
 <input type="text" id="fatherBio" placeholder="A short paragraph about this Church Father">
 
-<label for="fatherCoverImage">Portrait Image URL (optional)</label>
+<label for="fatherCoverImage">Portrait Image (optional)</label>
 
-<input type="text" id="fatherCoverImage" placeholder="e.g. images/fathers/augustine.jpg">
+<input type="file" id="fatherCoverImage" accept="image/*">
+
+<p id="fatherCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
 <div id="fatherError" class="admin-error"></div>
 
