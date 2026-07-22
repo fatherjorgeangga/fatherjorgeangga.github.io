@@ -261,7 +261,7 @@ if (!searchBox || !resultsEl) {
     unique.forEach(function (entry) {
       const item = document.createElement("a");
       item.className = "search-result";
-      item.href = entry.url;
+      item.href = entry.url + "?highlight=" + encodeURIComponent(entry.title);
 
       const badge = document.createElement("span");
       badge.className = "search-result-badge";
