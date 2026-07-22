@@ -20,6 +20,12 @@ import {
   onSnapshot,
   query
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCjaYeBaaQMBH43eR0XIVyAlopxS6Ku3u0",
@@ -33,6 +39,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
+
+// ===========================================
+// File upload helper — uploads to Firebase
+// Storage and returns the public download URL.
+// folder e.g. "books/covers", "saints/portraits"
+// ===========================================
+
+function uploadFile(file, folder) {
+  const safeName = Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+  const storageRef = ref(storage, folder + "/" + safeName);
+  return uploadBytes(storageRef, file).then(function () {
+    return getDownloadURL(storageRef);
+  });
+}
 
 // ===========================================
 // Known admins
@@ -255,39 +276,57 @@ const bookError = document.getElementById("bookError");
 const bookSubmitButton = document.getElementById("bookSubmitButton");
 const bookCancelButton = document.getElementById("bookCancelButton");
 const bookList = document.getElementById("bookList");
+const bookCoverCurrent = document.getElementById("bookCoverCurrent");
+const bookPdfCurrent = document.getElementById("bookPdfCurrent");
 
 let editingBookId = null;
+let editingBookCoverUrl = "";
+let editingBookPdfUrl = "";
 
 if (bookForm) {
   bookForm.addEventListener("submit", function (e) {
     e.preventDefault();
     bookError.textContent = "";
 
-    const data = {
-      title: bookTitle.value.trim(),
-      author: bookAuthor.value.trim(),
-      category: bookCategory.value.trim(),
-      description: bookDescription.value.trim(),
-      coverImage: bookCoverImage.value.trim(),
-      pdfLink: bookPdfLink.value.trim()
-    };
-
-    if (!data.title) {
+    if (!bookTitle.value.trim()) {
       bookError.textContent = "Title is required.";
       return;
     }
 
-    const savePromise = editingBookId
-      ? updateDoc(doc(db, "books", editingBookId), data)
-      : addDoc(collection(db, "books"), data);
+    bookSubmitButton.disabled = true;
+    bookSubmitButton.textContent = "Uploading…";
 
-    savePromise
+    const coverFile = bookCoverImage.files[0];
+    const pdfFile = bookPdfLink.files[0];
+
+    const coverPromise = coverFile ? uploadFile(coverFile, "books/covers") : Promise.resolve(editingBookCoverUrl);
+    const pdfPromise = pdfFile ? uploadFile(pdfFile, "books/pdfs") : Promise.resolve(editingBookPdfUrl);
+
+    Promise.all([coverPromise, pdfPromise])
+      .then(function (results) {
+        const data = {
+          title: bookTitle.value.trim(),
+          author: bookAuthor.value.trim(),
+          category: bookCategory.value.trim(),
+          description: bookDescription.value.trim(),
+          coverImage: results[0] || "",
+          pdfLink: results[1] || ""
+        };
+
+        return editingBookId
+          ? updateDoc(doc(db, "books", editingBookId), data)
+          : addDoc(collection(db, "books"), data);
+      })
       .then(function () {
         bookForm.reset();
         exitBookEditMode();
       })
       .catch(function (error) {
         bookError.textContent = "Error saving book: " + error.message;
+      })
+      .finally(function () {
+        bookSubmitButton.disabled = false;
+        bookSubmitButton.textContent = editingBookId ? "Save Changes" : "Add Book";
       });
   });
 }
@@ -301,12 +340,16 @@ if (bookCancelButton) {
 
 function enterBookEditMode(id, data) {
   editingBookId = id;
+  editingBookCoverUrl = data.coverImage || "";
+  editingBookPdfUrl = data.pdfLink || "";
   bookTitle.value = data.title || "";
   bookAuthor.value = data.author || "";
   bookCategory.value = data.category || "";
   bookDescription.value = data.description || "";
-  bookCoverImage.value = data.coverImage || "";
-  bookPdfLink.value = data.pdfLink || "";
+  bookCoverImage.value = "";
+  bookPdfLink.value = "";
+  bookCoverCurrent.textContent = editingBookCoverUrl ? "Current file on record — choose a new one only to replace it." : "No cover uploaded yet.";
+  bookPdfCurrent.textContent = editingBookPdfUrl ? "Current file on record — choose a new one only to replace it." : "No PDF uploaded yet.";
   bookSubmitButton.textContent = "Save Changes";
   bookCancelButton.style.display = "block";
   bookForm.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -314,6 +357,10 @@ function enterBookEditMode(id, data) {
 
 function exitBookEditMode() {
   editingBookId = null;
+  editingBookCoverUrl = "";
+  editingBookPdfUrl = "";
+  bookCoverCurrent.textContent = "";
+  bookPdfCurrent.textContent = "";
   bookSubmitButton.textContent = "Add Book";
   bookCancelButton.style.display = "none";
 }
@@ -368,41 +415,54 @@ const saintError = document.getElementById("saintError");
 const saintSubmitButton = document.getElementById("saintSubmitButton");
 const saintCancelButton = document.getElementById("saintCancelButton");
 const saintList = document.getElementById("saintList");
+const saintCoverCurrent = document.getElementById("saintCoverCurrent");
 
 let editingSaintId = null;
+let editingSaintCoverUrl = "";
 
 if (saintForm) {
   saintForm.addEventListener("submit", function (e) {
     e.preventDefault();
     saintError.textContent = "";
 
-    const data = {
-      name: saintName.value.trim(),
-      title: saintTitle.value.trim(),
-      years: saintYears.value.trim(),
-      feastDay: saintFeastDay.value.trim(),
-      patronage: saintPatronage.value.trim(),
-      majorWorks: saintMajorWorks.value.trim(),
-      bio: saintBio.value.trim(),
-      coverImage: saintCoverImage.value.trim()
-    };
-
-    if (!data.name) {
+    if (!saintName.value.trim()) {
       saintError.textContent = "Name is required.";
       return;
     }
 
-    const savePromise = editingSaintId
-      ? updateDoc(doc(db, "saints", editingSaintId), data)
-      : addDoc(collection(db, "saints"), data);
+    saintSubmitButton.disabled = true;
+    saintSubmitButton.textContent = "Uploading…";
 
-    savePromise
+    const coverFile = saintCoverImage.files[0];
+    const coverPromise = coverFile ? uploadFile(coverFile, "saints/portraits") : Promise.resolve(editingSaintCoverUrl);
+
+    coverPromise
+      .then(function (coverUrl) {
+        const data = {
+          name: saintName.value.trim(),
+          title: saintTitle.value.trim(),
+          years: saintYears.value.trim(),
+          feastDay: saintFeastDay.value.trim(),
+          patronage: saintPatronage.value.trim(),
+          majorWorks: saintMajorWorks.value.trim(),
+          bio: saintBio.value.trim(),
+          coverImage: coverUrl || ""
+        };
+
+        return editingSaintId
+          ? updateDoc(doc(db, "saints", editingSaintId), data)
+          : addDoc(collection(db, "saints"), data);
+      })
       .then(function () {
         saintForm.reset();
         exitSaintEditMode();
       })
       .catch(function (error) {
         saintError.textContent = "Error saving saint: " + error.message;
+      })
+      .finally(function () {
+        saintSubmitButton.disabled = false;
+        saintSubmitButton.textContent = editingSaintId ? "Save Changes" : "Add Saint";
       });
   });
 }
@@ -416,6 +476,7 @@ if (saintCancelButton) {
 
 function enterSaintEditMode(id, data) {
   editingSaintId = id;
+  editingSaintCoverUrl = data.coverImage || "";
   saintName.value = data.name || "";
   saintTitle.value = data.title || "";
   saintYears.value = data.years || "";
@@ -423,7 +484,8 @@ function enterSaintEditMode(id, data) {
   saintPatronage.value = data.patronage || "";
   saintMajorWorks.value = data.majorWorks || "";
   saintBio.value = data.bio || "";
-  saintCoverImage.value = data.coverImage || "";
+  saintCoverImage.value = "";
+  saintCoverCurrent.textContent = editingSaintCoverUrl ? "Current portrait on record — choose a new one only to replace it." : "No portrait uploaded yet.";
   saintSubmitButton.textContent = "Save Changes";
   saintCancelButton.style.display = "block";
   saintForm.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -431,6 +493,8 @@ function enterSaintEditMode(id, data) {
 
 function exitSaintEditMode() {
   editingSaintId = null;
+  editingSaintCoverUrl = "";
+  saintCoverCurrent.textContent = "";
   saintSubmitButton.textContent = "Add Saint";
   saintCancelButton.style.display = "none";
 }
@@ -485,41 +549,54 @@ const fatherError = document.getElementById("fatherError");
 const fatherSubmitButton = document.getElementById("fatherSubmitButton");
 const fatherCancelButton = document.getElementById("fatherCancelButton");
 const fatherList = document.getElementById("fatherList");
+const fatherCoverCurrent = document.getElementById("fatherCoverCurrent");
 
 let editingFatherId = null;
+let editingFatherCoverUrl = "";
 
 if (fatherForm) {
   fatherForm.addEventListener("submit", function (e) {
     e.preventDefault();
     fatherError.textContent = "";
 
-    const data = {
-      name: fatherName.value.trim(),
-      title: fatherTitle.value.trim(),
-      years: fatherYears.value.trim(),
-      region: fatherRegion.value.trim(),
-      feastDay: fatherFeastDay.value.trim(),
-      majorWorks: fatherMajorWorks.value.trim(),
-      bio: fatherBio.value.trim(),
-      coverImage: fatherCoverImage.value.trim()
-    };
-
-    if (!data.name) {
+    if (!fatherName.value.trim()) {
       fatherError.textContent = "Name is required.";
       return;
     }
 
-    const savePromise = editingFatherId
-      ? updateDoc(doc(db, "fathers", editingFatherId), data)
-      : addDoc(collection(db, "fathers"), data);
+    fatherSubmitButton.disabled = true;
+    fatherSubmitButton.textContent = "Uploading…";
 
-    savePromise
+    const coverFile = fatherCoverImage.files[0];
+    const coverPromise = coverFile ? uploadFile(coverFile, "fathers/portraits") : Promise.resolve(editingFatherCoverUrl);
+
+    coverPromise
+      .then(function (coverUrl) {
+        const data = {
+          name: fatherName.value.trim(),
+          title: fatherTitle.value.trim(),
+          years: fatherYears.value.trim(),
+          region: fatherRegion.value.trim(),
+          feastDay: fatherFeastDay.value.trim(),
+          majorWorks: fatherMajorWorks.value.trim(),
+          bio: fatherBio.value.trim(),
+          coverImage: coverUrl || ""
+        };
+
+        return editingFatherId
+          ? updateDoc(doc(db, "fathers", editingFatherId), data)
+          : addDoc(collection(db, "fathers"), data);
+      })
       .then(function () {
         fatherForm.reset();
         exitFatherEditMode();
       })
       .catch(function (error) {
         fatherError.textContent = "Error saving Church Father: " + error.message;
+      })
+      .finally(function () {
+        fatherSubmitButton.disabled = false;
+        fatherSubmitButton.textContent = editingFatherId ? "Save Changes" : "Add Church Father";
       });
   });
 }
@@ -533,6 +610,7 @@ if (fatherCancelButton) {
 
 function enterFatherEditMode(id, data) {
   editingFatherId = id;
+  editingFatherCoverUrl = data.coverImage || "";
   fatherName.value = data.name || "";
   fatherTitle.value = data.title || "";
   fatherYears.value = data.years || "";
@@ -540,7 +618,8 @@ function enterFatherEditMode(id, data) {
   fatherFeastDay.value = data.feastDay || "";
   fatherMajorWorks.value = data.majorWorks || "";
   fatherBio.value = data.bio || "";
-  fatherCoverImage.value = data.coverImage || "";
+  fatherCoverImage.value = "";
+  fatherCoverCurrent.textContent = editingFatherCoverUrl ? "Current portrait on record — choose a new one only to replace it." : "No portrait uploaded yet.";
   fatherSubmitButton.textContent = "Save Changes";
   fatherCancelButton.style.display = "block";
   fatherForm.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -548,6 +627,8 @@ function enterFatherEditMode(id, data) {
 
 function exitFatherEditMode() {
   editingFatherId = null;
+  editingFatherCoverUrl = "";
+  fatherCoverCurrent.textContent = "";
   fatherSubmitButton.textContent = "Add Church Father";
   fatherCancelButton.style.display = "none";
 }
