@@ -108,6 +108,30 @@ alt="Saint Michael Archives Logo">
 </div>
 
 <!-- ===========================
+     STORAGE USAGE TRACKER
+=========================== -->
+
+<div class="usage-tracker">
+
+<div class="usage-tracker-header">
+
+<span>📦 File Storage Usage</span>
+
+<span id="usageText">Loading…</span>
+
+</div>
+
+<div class="usage-bar-track">
+
+<div id="usageBarFill" class="usage-bar-fill" style="width:0%;"></div>
+
+</div>
+
+<p class="usage-tracker-note">Capped at 4.7 GB to stay safely under Firebase's free 5 GB limit. If you hit the cap, use the "or paste a URL instead" option on any upload field.</p>
+
+</div>
+
+<!-- ===========================
      TABS
 =========================== -->
 
@@ -231,11 +255,19 @@ alt="Saint Michael Archives Logo">
 
 <p id="bookCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
+<label for="bookCoverImageUrl" style="font-weight:normal; text-transform:none; font-size:12.5px; color:#888; margin-top:8px;">...or paste a URL instead (e.g. Google Drive direct link)</label>
+
+<input type="text" id="bookCoverImageUrl" placeholder="https://...">
+
 <label for="bookPdfLink">PDF File (optional — leave blank for "Coming Soon")</label>
 
 <input type="file" id="bookPdfLink" accept="application/pdf">
 
 <p id="bookPdfCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
+
+<label for="bookPdfLinkUrl" style="font-weight:normal; text-transform:none; font-size:12.5px; color:#888; margin-top:8px;">...or paste a URL instead (e.g. Google Drive direct link)</label>
+
+<input type="text" id="bookPdfLinkUrl" placeholder="https://...">
 
 <div id="bookError" class="admin-error"></div>
 
@@ -311,6 +343,10 @@ alt="Saint Michael Archives Logo">
 
 <p id="saintCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
 
+<label for="saintCoverImageUrl" style="font-weight:normal; text-transform:none; font-size:12.5px; color:#888; margin-top:8px;">...or paste a URL instead (e.g. Google Drive direct link)</label>
+
+<input type="text" id="saintCoverImageUrl" placeholder="https://...">
+
 <div id="saintError" class="admin-error"></div>
 
 <button type="submit" class="admin-submit" id="saintSubmitButton">Add Saint</button>
@@ -384,6 +420,10 @@ alt="Saint Michael Archives Logo">
 <input type="file" id="fatherCoverImage" accept="image/*">
 
 <p id="fatherCoverCurrent" style="font-size:13px; color:#888; margin:6px 0 0;"></p>
+
+<label for="fatherCoverImageUrl" style="font-weight:normal; text-transform:none; font-size:12.5px; color:#888; margin-top:8px;">...or paste a URL instead (e.g. Google Drive direct link)</label>
+
+<input type="text" id="fatherCoverImageUrl" placeholder="https://...">
 
 <div id="fatherError" class="admin-error"></div>
 
